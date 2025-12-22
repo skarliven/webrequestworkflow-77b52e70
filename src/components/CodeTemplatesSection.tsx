@@ -87,6 +87,43 @@ const codeTemplates = [
   </div>
 </div>`,
   },
+  {
+    name: "Right Sidebar - Regulation Page",
+    description: "Social connect sidebar with flexbox layout",
+    code: `<div class="card-body">
+  <div class="post-connect-subscribe" style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center;">
+    <!-- Facebook -->
+    <a href="https://www.facebook.com/CaliforniaPOST" target="_blank" rel="noopener" title="Facebook">
+      <span aria-hidden="true" class="ca-gov-icon-facebook"></span>
+      <span class="sr-only">Facebook</span>
+      <span class="external-link-icon" aria-hidden="true"></span>
+    </a>
+    <!-- Email Alerts -->
+    <a href="/e-mail-alerts" title="Email Alerts">
+      <span aria-hidden="true" class="ca-gov-icon-email"></span>
+      <span class="sr-only">Email</span>
+    </a>
+    <!-- YouTube -->
+    <a href="https://www.youtube.com/user/CaliforniaPOST/" target="_blank" rel="noopener" title="YouTube">
+      <span aria-hidden="true" class="ca-gov-icon-youtube"></span>
+      <span class="sr-only">YouTube</span>
+      <span class="external-link-icon" aria-hidden="true"></span>
+    </a>
+    <!-- Instagram -->
+    <a href="https://www.instagram.com/commissiononpost/" target="_blank" rel="noopener" title="Instagram">
+      <span aria-hidden="true" class="ca-gov-icon-instagram"></span>
+      <span class="sr-only">Instagram</span>
+      <span class="external-link-icon" aria-hidden="true"></span>
+    </a>
+    <!-- LinkedIn -->
+    <a href="https://www.linkedin.com/company/california-post/" target="_blank" rel="noopener" title="LinkedIn">
+      <span aria-hidden="true" class="ca-gov-icon-linkedin"></span>
+      <span class="sr-only">LinkedIn</span>
+      <span class="external-link-icon" aria-hidden="true"></span>
+    </a>
+  </div>
+</div>`,
+  },
 ];
 
 export const CodeTemplatesSection = () => {
