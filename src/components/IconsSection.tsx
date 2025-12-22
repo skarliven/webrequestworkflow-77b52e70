@@ -11,6 +11,11 @@ const icons = [
   { name: "Contact Us", code: '<span aria-hidden="true" class="ca-gov-icon-contact-us"></span>' },
   { name: "Favorite", code: '<span aria-hidden="true" class="ca-gov-icon-favorite"></span>' },
   { name: "YouTube", code: '<span aria-hidden="true" class="ca-gov-icon-youtube"></span>' },
+  { name: "Facebook", code: '<span aria-hidden="true" class="ca-gov-icon-facebook"></span>' },
+  { name: "Email", code: '<span aria-hidden="true" class="ca-gov-icon-email"></span>' },
+  { name: "Instagram", code: '<span aria-hidden="true" class="ca-gov-icon-instagram"></span>' },
+  { name: "LinkedIn", code: '<span aria-hidden="true" class="ca-gov-icon-linkedin"></span>' },
+  { name: "External Link", code: '<span class="external-link-icon" aria-hidden="true"></span>' },
 ];
 
 export const IconsSection = () => {

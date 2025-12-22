@@ -55,6 +55,38 @@ const codeTemplates = [
   </div>
 </div>`,
   },
+  {
+    name: "Bulletin Connect/Subscribe",
+    description: "Social media and subscription links section",
+    code: `<div class="card-body">
+  <div class="post-connect-subscribe">
+    <a href="https://www.facebook.com/CaliforniaPOST">
+      <span aria-hidden="true" class="ca-gov-icon-facebook"></span>
+      <span class="sr-only">Facebook</span>
+      <span class="external-link-icon" aria-hidden="true"></span>
+    </a>
+    <a href="/e-mail-alerts">
+      <span aria-hidden="true" class="ca-gov-icon-email"></span>
+      <span class="sr-only">Email</span>
+    </a>
+    <a href="https://www.youtube.com/user/CaliforniaPOST/">
+      <span aria-hidden="true" class="ca-gov-icon-youtube"></span>
+      <span class="sr-only">Youtube</span>
+      <span class="external-link-icon" aria-hidden="true"></span>
+    </a>
+    <a href="https://www.instagram.com/commissiononpost/">
+      <span aria-hidden="true" class="ca-gov-icon-instagram"></span>
+      <span class="sr-only">Instagram</span>
+      <span class="external-link-icon" aria-hidden="true"></span>
+    </a>
+    <a href="https://www.linkedin.com/company/commissiononpost/">
+      <span aria-hidden="true" class="ca-gov-icon-linkedin"></span>
+      <span class="sr-only">LinkedIn</span>
+      <span class="external-link-icon" aria-hidden="true"></span>
+    </a>
+  </div>
+</div>`,
+  },
 ];
 
 export const CodeTemplatesSection = () => {
