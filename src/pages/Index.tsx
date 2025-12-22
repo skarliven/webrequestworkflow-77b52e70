@@ -6,6 +6,7 @@ import { IconsSection } from "@/components/IconsSection";
 import { PathsSection } from "@/components/PathsSection";
 import { EmailTemplatesSection } from "@/components/EmailTemplatesSection";
 import { PassNoticesSection } from "@/components/PassNoticesSection";
+import { ModulesSection } from "@/components/ModulesSection";
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState("code");
@@ -22,6 +23,8 @@ const Index = () => {
         return <EmailTemplatesSection />;
       case "pass":
         return <PassNoticesSection />;
+      case "modules":
+        return <ModulesSection />;
       default:
         return <CodeTemplatesSection />;
     }
