@@ -124,6 +124,72 @@ const codeTemplates = [
   </div>
 </div>`,
   },
+  {
+    name: "PMR Top Articles Section",
+    description: "Multi-article layout with lightbox images",
+    code: `<section class="top-articles">
+  <!-- 1 -->
+  <article aria-labelledby="article-1-title">
+    <h3 id="article-1-title">Article 1</h3>
+    <figure data-src="/portals/0/post_images/APRphotos/template-post.png" data-toggle="lightbox">
+      <img
+        src="/portals/0/post_images/APRphotos/template-post.png"
+        alt="Template placeholder image"
+        loading="lazy"
+      />
+      <figcaption>Image caption goes here</figcaption>
+    </figure>
+    <p>Text here</p>
+    <p>Text here</p>
+  </article>
+  <!-- 2 -->
+  <article aria-labelledby="article-2-title">
+    <h3 id="article-2-title">Article 2</h3>
+    <figure data-src="/portals/0/post_images/APRphotos/template-post.png" data-toggle="lightbox">
+      <img
+        src="/portals/0/post_images/APRphotos/template-post.png"
+        alt="Template placeholder image"
+        loading="lazy"
+      />
+      <figcaption>Image caption goes here</figcaption>
+    </figure>
+    <p>Text here</p>
+    <p>Text here</p>
+  </article>
+  <!-- 3 -->
+  <article aria-labelledby="article-3-title">
+    <h3 id="article-3-title">Article 3</h3>
+    <figure data-src="/portals/0/post_images/APRphotos/template-post.png" data-toggle="lightbox">
+      <img
+        src="/portals/0/post_images/APRphotos/template-post.png"
+        alt="Template placeholder image"
+        loading="lazy"
+      />
+      <figcaption>Image caption goes here</figcaption>
+    </figure>
+    <p>Text here</p>
+    <p>Text here</p>
+  </article>
+  <!-- Add more articles as needed -->
+</section>`,
+  },
+  {
+    name: "PMR Single Article",
+    description: "Individual article with lightbox image",
+    code: `<article aria-labelledby="article-1-title">
+  <h3 id="article-1-title">Article Title</h3>
+  <figure data-src="/portals/0/post_images/APRphotos/template-post.png" data-toggle="lightbox">
+    <img
+      src="/portals/0/post_images/APRphotos/template-post.png"
+      alt="Template placeholder image"
+      loading="lazy"
+    />
+    <figcaption>Image caption goes here</figcaption>
+  </figure>
+  <p>Text here</p>
+  <p>Text here</p>
+</article>`,
+  },
 ];
 
 export const CodeTemplatesSection = () => {
