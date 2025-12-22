@@ -4,7 +4,15 @@ import { TemplateCard } from "./TemplateCard";
 
 const passNotices = [
   {
+    name: "PASS Course Notice",
+    description: "Course announcement with PDF link",
+    template: `<h2><a href="https://post.ca.gov/Portals/0/post_docs/PASS_Notices/xx.pdf" target="_blank">Lorem text</a></h2>
+
+<p>Course will be held January 15, 2026 in Long Beach, CA</p>`,
+  },
+  {
     name: "Standard PASS Notice",
+    description: "Official notice template",
     template: `PASS NOTICE
 
 Applicant Name: [Name]
@@ -21,6 +29,7 @@ Authorized by: [Authority Name]`,
   },
   {
     name: "Conditional PASS Notice",
+    description: "Conditional approval template",
     template: `CONDITIONAL PASS NOTICE
 
 Applicant Name: [Name]
@@ -38,6 +47,7 @@ Contact: [Contact Info]`,
   },
   {
     name: "PASS with Commendation",
+    description: "Distinction award template",
     template: `PASS NOTICE - WITH DISTINCTION
 
 Applicant Name: [Name]
@@ -65,7 +75,7 @@ export const PassNoticesSection = () => {
             key={notice.name} 
             title={notice.name} 
             code={notice.template}
-            description="Official notice template"
+            description={notice.description}
           />
         ))}
       </div>
