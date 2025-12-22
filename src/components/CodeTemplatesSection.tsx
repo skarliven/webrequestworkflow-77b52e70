@@ -190,6 +190,116 @@ const codeTemplates = [
   <p>Text here</p>
 </article>`,
   },
+  {
+    name: "Upcoming Meetings Page",
+    description: "Full meetings page with Commission and POSAAB tables",
+    code: `<h1>Upcoming Meetings</h1>
+
+<p><em>Unless otherwise noted, all meetings are open to the public and hosted at the locations below.</em></p>
+
+<h2 id="Commission">POST Commission and Advisory Committee</h2>
+
+<p>
+  The POST Commission meets four times a year to establish standards, regulations, and to give direction to Commission staff.
+  Commissioners serve without pay but are reimbursed for expenses incurred while attending meetings.
+</p>
+
+<p>
+  The Advisory Committee, comprised of Commission stakeholders, meets before the Commission meeting to review agenda items
+  and make recommendations to the Commission.
+</p>
+
+<p class="textRed">
+  <strong>Agendas are posted 10 days prior to the Commission meeting date.</strong>
+</p>
+
+<h3>Upcoming Meetings</h3>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Session</th>
+      <th scope="col">Time</th>
+      <th scope="col">Location</th>
+      <th scope="col">Agenda</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Advisory Committee</strong><br>December 02, 2025</td>
+      <td>10:00 AM – 5:00 PM</td>
+      <td>
+        <strong>POST</strong><br>
+        860 Stillwater Road<br>
+        West Sacramento, CA 95605
+      </td>
+      <td></td>
+    </tr>
+    <tr>
+      <td><strong>POST Commission</strong><br>December 03, 2025</td>
+      <td>10:00 AM – 5:00 PM</td>
+      <td>
+        <strong>POST</strong><br>
+        860 Stillwater Road<br>
+        West Sacramento, CA 95605
+      </td>
+      <td></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="POSAAB">Peace Officer Standards Accountability Advisory Board</h2>
+
+<p>
+  The Board serves as an advisory body to the Commission and reviews serious misconduct cases involving peace officers.
+  Public hearings are conducted to formulate decertification recommendations based on investigative findings.
+</p>
+
+<h3>Upcoming Meetings</h3>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Session</th>
+      <th scope="col">Time</th>
+      <th scope="col">Location</th>
+      <th scope="col">Agenda</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>POSAAB Serious Misconduct Hearing</strong><br>February 04–05, 2026</td>
+      <td>9:00 AM – 5:00 PM</td>
+      <td>
+        <strong>POST</strong><br>
+        860 Stillwater Road<br>
+        West Sacramento, CA 95605
+      </td>
+      <td></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>
+  <em><strong>
+    Board meeting dates are tentative and subject to cancellation pending requests from subject officers.
+  </strong></em>
+</p>`,
+  },
+  {
+    name: "Meeting Table Row",
+    description: "Single meeting row for tables",
+    code: `<tr>
+  <td><strong>Advisory Committee</strong><br>December 02, 2025</td>
+  <td>10:00 AM – 5:00 PM</td>
+  <td>
+    <strong>POST</strong><br>
+    860 Stillwater Road<br>
+    West Sacramento, CA 95605
+  </td>
+  <td></td>
+</tr>`,
+  },
 ];
 
 export const CodeTemplatesSection = () => {
