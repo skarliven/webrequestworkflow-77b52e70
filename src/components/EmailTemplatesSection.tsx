@@ -69,6 +69,19 @@ If you have questions, please let me know.
 Thank you,
 Skarli`,
   },
+  {
+    name: "Position Ineligible for Posting",
+    template: `Hi [Name],
+
+Thank you for checking with us.
+
+This position cannot be posted on the POST Law Enforcement Jobs page because it does not perform law enforcement duties and it does not require POST certification. The role is administrative and compliance focused, supporting law enforcement operations rather than carrying out sworn or POST-certified functions.
+
+Please let me know if you have another position you would like us to review, or if you have questions about posting requirements.
+
+Thank you,
+Skarli`,
+  },
 ];
 
 interface EmailTemplatesSectionProps {
