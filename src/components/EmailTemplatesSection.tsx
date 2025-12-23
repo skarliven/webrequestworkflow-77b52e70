@@ -54,6 +54,21 @@ Please reach out if you have any questions.
 Thank you,
 Skarli`,
   },
+  {
+    name: "SLI Network Access Activated",
+    template: `Hi [Name],
+
+Your access to the SLI Network is now active.
+
+Here are your direct links:
+SLI Network: https://post.ca.gov/sbsli-network
+Class 568: https://post.ca.gov/Class-568
+
+If you have questions, please let me know.
+
+Thank you,
+Skarli`,
+  },
 ];
 
 interface EmailTemplatesSectionProps {
