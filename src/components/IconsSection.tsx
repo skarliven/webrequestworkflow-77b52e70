@@ -18,15 +18,28 @@ const icons = [
   { name: "External Link", code: '<span class="external-link-icon" aria-hidden="true"></span>' },
 ];
 
-export const IconsSection = () => {
+interface IconsSectionProps {
+  searchQuery?: string;
+}
+
+export const IconsSection = ({ searchQuery = "" }: IconsSectionProps) => {
+  const filteredIcons = icons.filter((icon) => {
+    const query = searchQuery.toLowerCase();
+    return icon.name.toLowerCase().includes(query) || icon.code.toLowerCase().includes(query);
+  });
+
   return (
     <section className="animate-fade-in" style={{ animationDelay: "0.1s" }}>
-      <SectionHeader title="CA Gov Icons" icon={<Sparkles className="h-5 w-5" />} count={icons.length} />
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-        {icons.map((icon) => (
-          <TemplateCard key={icon.name} title={icon.name} code={icon.code} />
-        ))}
-      </div>
+      <SectionHeader title="CA Gov Icons" icon={<Sparkles className="h-5 w-5" />} count={filteredIcons.length} />
+      {filteredIcons.length === 0 ? (
+        <p className="text-muted-foreground text-sm text-center py-8">No icons found matching "{searchQuery}"</p>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          {filteredIcons.map((icon) => (
+            <TemplateCard key={icon.name} title={icon.name} code={icon.code} />
+          ))}
+        </div>
+      )}
     </section>
   );
 };

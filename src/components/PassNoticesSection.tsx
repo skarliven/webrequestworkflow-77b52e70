@@ -65,20 +65,37 @@ Authorized by: [Authority Name]`,
   },
 ];
 
-export const PassNoticesSection = () => {
+interface PassNoticesSectionProps {
+  searchQuery?: string;
+}
+
+export const PassNoticesSection = ({ searchQuery = "" }: PassNoticesSectionProps) => {
+  const filteredNotices = passNotices.filter((notice) => {
+    const query = searchQuery.toLowerCase();
+    return (
+      notice.name.toLowerCase().includes(query) ||
+      notice.description?.toLowerCase().includes(query) ||
+      notice.template.toLowerCase().includes(query)
+    );
+  });
+
   return (
     <section className="animate-fade-in" style={{ animationDelay: "0.4s" }}>
-      <SectionHeader title="PASS Notices" icon={<CheckCircle className="h-5 w-5" />} count={passNotices.length} />
-      <div className="grid grid-cols-1 gap-4">
-        {passNotices.map((notice) => (
-          <TemplateCard 
-            key={notice.name} 
-            title={notice.name} 
-            code={notice.template}
-            description={notice.description}
-          />
-        ))}
-      </div>
+      <SectionHeader title="PASS Notices" icon={<CheckCircle className="h-5 w-5" />} count={filteredNotices.length} />
+      {filteredNotices.length === 0 ? (
+        <p className="text-muted-foreground text-sm text-center py-8">No notices found matching "{searchQuery}"</p>
+      ) : (
+        <div className="grid grid-cols-1 gap-4">
+          {filteredNotices.map((notice) => (
+            <TemplateCard 
+              key={notice.name} 
+              title={notice.name} 
+              code={notice.template}
+              description={notice.description}
+            />
+          ))}
+        </div>
+      )}
     </section>
   );
 };

@@ -44,20 +44,33 @@ Best regards,
   },
 ];
 
-export const EmailTemplatesSection = () => {
+interface EmailTemplatesSectionProps {
+  searchQuery?: string;
+}
+
+export const EmailTemplatesSection = ({ searchQuery = "" }: EmailTemplatesSectionProps) => {
+  const filteredTemplates = emailTemplates.filter((email) => {
+    const query = searchQuery.toLowerCase();
+    return email.name.toLowerCase().includes(query) || email.template.toLowerCase().includes(query);
+  });
+
   return (
     <section className="animate-fade-in" style={{ animationDelay: "0.3s" }}>
-      <SectionHeader title="Email Templates" icon={<Mail className="h-5 w-5" />} count={emailTemplates.length} />
-      <div className="grid grid-cols-1 gap-4">
-        {emailTemplates.map((email) => (
-          <TemplateCard 
-            key={email.name} 
-            title={email.name} 
-            code={email.template}
-            description="Click to copy full template"
-          />
-        ))}
-      </div>
+      <SectionHeader title="Email Templates" icon={<Mail className="h-5 w-5" />} count={filteredTemplates.length} />
+      {filteredTemplates.length === 0 ? (
+        <p className="text-muted-foreground text-sm text-center py-8">No templates found matching "{searchQuery}"</p>
+      ) : (
+        <div className="grid grid-cols-1 gap-4">
+          {filteredTemplates.map((email) => (
+            <TemplateCard 
+              key={email.name} 
+              title={email.name} 
+              code={email.template}
+              description="Click to copy full template"
+            />
+          ))}
+        </div>
+      )}
     </section>
   );
 };

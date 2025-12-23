@@ -7,26 +7,28 @@ import { PathsSection } from "@/components/PathsSection";
 import { EmailTemplatesSection } from "@/components/EmailTemplatesSection";
 import { PassNoticesSection } from "@/components/PassNoticesSection";
 import { ModulesSection } from "@/components/ModulesSection";
+import { SearchBar } from "@/components/SearchBar";
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState("code");
+  const [searchQuery, setSearchQuery] = useState("");
 
   const renderContent = () => {
     switch (activeTab) {
       case "code":
-        return <CodeTemplatesSection />;
+        return <CodeTemplatesSection searchQuery={searchQuery} />;
       case "icons":
-        return <IconsSection />;
+        return <IconsSection searchQuery={searchQuery} />;
       case "paths":
-        return <PathsSection />;
+        return <PathsSection searchQuery={searchQuery} />;
       case "email":
-        return <EmailTemplatesSection />;
+        return <EmailTemplatesSection searchQuery={searchQuery} />;
       case "pass":
-        return <PassNoticesSection />;
+        return <PassNoticesSection searchQuery={searchQuery} />;
       case "modules":
-        return <ModulesSection />;
+        return <ModulesSection searchQuery={searchQuery} />;
       default:
-        return <CodeTemplatesSection />;
+        return <CodeTemplatesSection searchQuery={searchQuery} />;
     }
   };
 
@@ -76,6 +78,15 @@ const Index = () => {
             <span className="hidden sm:inline">Ready to copy</span>
           </div>
         </header>
+
+        {/* Search Bar */}
+        <div className="mb-6">
+          <SearchBar 
+            value={searchQuery} 
+            onChange={setSearchQuery} 
+            placeholder="Search templates, icons, paths..."
+          />
+        </div>
 
         {/* Navigation */}
         <div className="mb-8">
