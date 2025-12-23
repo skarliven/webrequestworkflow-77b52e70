@@ -42,6 +42,18 @@ Please contact us if you have any questions.
 Best regards,
 [Your Name]`,
   },
+  {
+    name: "Job Listing Posted Confirmation",
+    template: `Hi [Name],
+
+Your job listing has been posted and announced. You can view it here:
+https://post.ca.gov/Law-Enforcement-Jobs
+
+Please reach out if you have any questions.
+
+Thank you,
+Skarli`,
+  },
 ];
 
 interface EmailTemplatesSectionProps {
