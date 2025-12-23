@@ -348,20 +348,37 @@ If the page loads correctly, the deployment is successful.`,
   },
 ];
 
-export const CodeTemplatesSection = () => {
+interface CodeTemplatesSectionProps {
+  searchQuery?: string;
+}
+
+export const CodeTemplatesSection = ({ searchQuery = "" }: CodeTemplatesSectionProps) => {
+  const filteredTemplates = codeTemplates.filter((template) => {
+    const query = searchQuery.toLowerCase();
+    return (
+      template.name.toLowerCase().includes(query) ||
+      template.description?.toLowerCase().includes(query) ||
+      template.code.toLowerCase().includes(query)
+    );
+  });
+
   return (
     <section className="animate-fade-in" style={{ animationDelay: "0s" }}>
-      <SectionHeader title="Code Templates" icon={<Code2 className="h-5 w-5" />} count={codeTemplates.length} />
-      <div className="grid grid-cols-1 gap-4">
-        {codeTemplates.map((template) => (
-          <TemplateCard 
-            key={template.name} 
-            title={template.name} 
-            code={template.code}
-            description={template.description}
-          />
-        ))}
-      </div>
+      <SectionHeader title="Code Templates" icon={<Code2 className="h-5 w-5" />} count={filteredTemplates.length} />
+      {filteredTemplates.length === 0 ? (
+        <p className="text-muted-foreground text-sm text-center py-8">No templates found matching "{searchQuery}"</p>
+      ) : (
+        <div className="grid grid-cols-1 gap-4">
+          {filteredTemplates.map((template) => (
+            <TemplateCard 
+              key={template.name} 
+              title={template.name} 
+              code={template.code}
+              description={template.description}
+            />
+          ))}
+        </div>
+      )}
     </section>
   );
 };

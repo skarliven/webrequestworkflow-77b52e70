@@ -31,24 +31,41 @@ const modules = [
   },
 ];
 
-export const ModulesSection = () => {
+interface ModulesSectionProps {
+  searchQuery?: string;
+}
+
+export const ModulesSection = ({ searchQuery = "" }: ModulesSectionProps) => {
+  const filteredModules = modules.filter((module) => {
+    const query = searchQuery.toLowerCase();
+    return (
+      module.title.toLowerCase().includes(query) ||
+      module.description?.toLowerCase().includes(query) ||
+      module.code.toLowerCase().includes(query)
+    );
+  });
+
   return (
     <div className="space-y-6">
       <SectionHeader
         title="Modules"
         icon={ModulesIcon}
-        count={modules.length}
+        count={filteredModules.length}
       />
-      <div className="grid gap-4">
-        {modules.map((module, index) => (
-          <TemplateCard
-            key={index}
-            title={module.title}
-            code={module.code}
-            description={module.description}
-          />
-        ))}
-      </div>
+      {filteredModules.length === 0 ? (
+        <p className="text-muted-foreground text-sm text-center py-8">No modules found matching "{searchQuery}"</p>
+      ) : (
+        <div className="grid gap-4">
+          {filteredModules.map((module, index) => (
+            <TemplateCard
+              key={index}
+              title={module.title}
+              code={module.code}
+              description={module.description}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 };

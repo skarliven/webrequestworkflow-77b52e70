@@ -10,20 +10,33 @@ const paths = [
   { name: "Resources", path: "/Portals/0/Resources/" },
 ];
 
-export const PathsSection = () => {
+interface PathsSectionProps {
+  searchQuery?: string;
+}
+
+export const PathsSection = ({ searchQuery = "" }: PathsSectionProps) => {
+  const filteredPaths = paths.filter((item) => {
+    const query = searchQuery.toLowerCase();
+    return item.name.toLowerCase().includes(query) || item.path.toLowerCase().includes(query);
+  });
+
   return (
     <section className="animate-fade-in" style={{ animationDelay: "0.2s" }}>
-      <SectionHeader title="Source Paths" icon={<FolderOpen className="h-5 w-5" />} count={paths.length} />
-      <div className="grid grid-cols-1 gap-3">
-        {paths.map((item) => (
-          <TemplateCard 
-            key={item.name} 
-            title={item.name} 
-            code={item.path}
-            description="File path reference"
-          />
-        ))}
-      </div>
+      <SectionHeader title="Source Paths" icon={<FolderOpen className="h-5 w-5" />} count={filteredPaths.length} />
+      {filteredPaths.length === 0 ? (
+        <p className="text-muted-foreground text-sm text-center py-8">No paths found matching "{searchQuery}"</p>
+      ) : (
+        <div className="grid grid-cols-1 gap-3">
+          {filteredPaths.map((item) => (
+            <TemplateCard 
+              key={item.name} 
+              title={item.name} 
+              code={item.path}
+              description="File path reference"
+            />
+          ))}
+        </div>
+      )}
     </section>
   );
 };
