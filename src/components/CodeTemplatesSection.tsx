@@ -300,6 +300,52 @@ const codeTemplates = [
   <td></td>
 </tr>`,
   },
+  {
+    name: "Netlify Deployment Guide (Lovable/Vite)",
+    description: "Step-by-step Netlify configuration for Vite projects",
+    code: `## How to Configure a Lovable Vite Project for Netlify Deployment
+
+### 1. Open the Netlify Project
+- Log in to Netlify.
+- Open your project.
+
+### 2. Navigate to Build Settings
+- In the left sidebar, click **Build and deploy**.
+- Click **Continuous deployment**.
+
+### 3. Configure Build Settings
+Scroll to the **Build settings** section and set the fields exactly as follows:
+
+| Field             | Value           |
+|-------------------|-----------------|
+| Base directory    | *(leave empty)* |
+| Build command     | npm run build   |
+| Publish directory | dist            |
+
+⚠️ **Important:** Do not use \`public\`, \`build\`, or \`/\`.
+Vite outputs production files into the \`dist\` folder.
+
+### 4. Save the Configuration
+Click **Save** to apply the changes.
+
+### 5. Trigger a Clean Deploy
+- In the left sidebar, click **Deploys**.
+- Click **Trigger deploy**.
+- Select **Clear cache and deploy site**.
+
+### 6. Verify Deployment Success
+- Wait for the deploy to complete.
+- The status should show **Published**.
+- Open the deploy details and confirm these files exist:
+  - \`dist/index.html\`
+  - \`dist/assets/\`
+
+### 7. Test the Netlify URL
+Open the Netlify-generated URL, for example:
+\`your-site-name.netlify.app\`
+
+If the page loads correctly, the deployment is successful.`,
+  },
 ];
 
 export const CodeTemplatesSection = () => {
