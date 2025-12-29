@@ -1,4 +1,4 @@
-import { Code2, Sparkles, FolderOpen, Mail, CheckCircle, LayoutGrid } from "lucide-react";
+import { Code2, Sparkles, FolderOpen, Mail, CheckCircle, LayoutGrid, Type } from "lucide-react";
 
 interface NavTabsProps {
   activeTab: string;
@@ -12,6 +12,7 @@ const tabs = [
   { id: "email", label: "Email", icon: Mail },
   { id: "pass", label: "PASS", icon: CheckCircle },
   { id: "modules", label: "Modules", icon: LayoutGrid },
+  { id: "text", label: "Text", icon: Type },
 ];
 
 export const NavTabs = ({ activeTab, onTabChange }: NavTabsProps) => {

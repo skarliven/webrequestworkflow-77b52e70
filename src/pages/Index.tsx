@@ -7,6 +7,7 @@ import { PathsSection } from "@/components/PathsSection";
 import { EmailTemplatesSection } from "@/components/EmailTemplatesSection";
 import { PassNoticesSection } from "@/components/PassNoticesSection";
 import { ModulesSection } from "@/components/ModulesSection";
+import TextFormatterSection from "@/components/TextFormatterSection";
 import { SearchBar } from "@/components/SearchBar";
 
 const Index = () => {
@@ -27,6 +28,8 @@ const Index = () => {
         return <PassNoticesSection searchQuery={searchQuery} />;
       case "modules":
         return <ModulesSection searchQuery={searchQuery} />;
+      case "text":
+        return <TextFormatterSection />;
       default:
         return <CodeTemplatesSection searchQuery={searchQuery} />;
     }
