@@ -135,6 +135,16 @@ const TextFormatterSection = () => {
     return formatted.trim();
   };
 
+  const minifyHTML = (html: string): string => {
+    if (!html.trim()) return "";
+    return html
+      .replace(/\s+/g, " ") // Collapse all whitespace to single space
+      .replace(/>\s+</g, "><") // Remove whitespace between tags
+      .replace(/\s*\/>/g, "/>") // Clean self-closing tags
+      .replace(/<!--[\s\S]*?-->/g, "") // Remove comments
+      .trim();
+  };
+
   const handleFormatHTML = () => {
     if (!htmlInput.trim()) {
       toast.error("Please enter HTML to format");
@@ -143,6 +153,16 @@ const TextFormatterSection = () => {
     const formatted = formatHTML(htmlInput);
     setHtmlOutput(formatted);
     toast.success("HTML formatted successfully");
+  };
+
+  const handleMinifyHTML = () => {
+    if (!htmlInput.trim()) {
+      toast.error("Please enter HTML to minify");
+      return;
+    }
+    const minified = minifyHTML(htmlInput);
+    setHtmlOutput(minified);
+    toast.success("HTML minified successfully");
   };
 
   const handleCopyHTML = async () => {
@@ -320,6 +340,15 @@ const TextFormatterSection = () => {
             >
               <Wand2 className="h-3 w-3 mr-1" />
               Format HTML
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleMinifyHTML}
+              className="text-xs"
+            >
+              <Code className="h-3 w-3 mr-1" />
+              Minify HTML
             </Button>
             <Button
               variant="secondary"
