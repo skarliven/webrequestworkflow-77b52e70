@@ -346,6 +346,36 @@ Open the Netlify-generated URL, for example:
 
 If the page loads correctly, the deployment is successful.`,
   },
+  {
+    name: "DNN Classic Editor - Icon Fix",
+    description: "Prevent icons from disappearing in DNN Classic Editor",
+    code: `## Issue: Icons Disappearing in DNN Classic Editor
+
+### Problem
+Icons were disappearing or turning into a visible "i" when editing pages 
+in the DNN Classic Editor, even when using Source mode.
+
+### Cause
+The Classic Editor automatically sanitizes HTML every time a content module 
+is reopened. During this process, it removes empty inline elements such as 
+<span> or <i> tags. Since icon fonts rely on empty span elements with CSS 
+classes, the editor either deletes them or injects a fallback character, 
+which later appears as a visible "i."
+
+### Solution
+Add a zero-width space character (&#8203;) inside every icon span. This 
+makes the span non-empty, so the Classic Editor preserves it during re-parsing. 
+The character is invisible on the page and does not affect layout or accessibility.
+
+### Standard Pattern
+<span aria-hidden="true" class="ca-gov-icon-example">&#8203;</span>
+
+### Important Notes
+- Always edit icon markup in Source mode
+- Do not switch to Visual or Rich Text mode after adding icons
+- Do not remove the zero-width space character
+- This fix applies to all CA Gov icon classes`,
+  },
 ];
 
 interface CodeTemplatesSectionProps {
