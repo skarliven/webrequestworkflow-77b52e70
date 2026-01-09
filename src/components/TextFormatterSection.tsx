@@ -259,16 +259,32 @@ const TextFormatterSection = () => {
 
   const handleClearJS = () => { setJsInput(""); setJsOutput(""); toast.success("Cleared"); };
 
-  // Bulk Icon Fix - adds zero-width space to empty icon spans and spans with only whitespace
+  // Icon mappings for common text patterns
+  const iconMappings: { pattern: RegExp; icon: string }[] = [
+    { pattern: /quick\s*links?/i, icon: 'ca-gov-icon-link' },
+    { pattern: /download/i, icon: 'ca-gov-icon-download' },
+    { pattern: /contact(\s*us)?/i, icon: 'ca-gov-icon-contact-us' },
+    { pattern: /calendar|event|meeting/i, icon: 'ca-gov-icon-calendar' },
+    { pattern: /email|e-mail/i, icon: 'ca-gov-icon-email' },
+    { pattern: /info(rmation)?/i, icon: 'ca-gov-icon-info' },
+    { pattern: /legal|law|regulation/i, icon: 'ca-gov-icon-justice-legal' },
+    { pattern: /favorite|bookmark/i, icon: 'ca-gov-icon-favorite' },
+    { pattern: /facebook/i, icon: 'ca-gov-icon-facebook' },
+    { pattern: /youtube/i, icon: 'ca-gov-icon-youtube' },
+    { pattern: /instagram/i, icon: 'ca-gov-icon-instagram' },
+    { pattern: /linkedin/i, icon: 'ca-gov-icon-linkedin' },
+  ];
+
+  // Bulk Icon Fix - adds zero-width space to empty icon spans AND adds icons to headings
   const fixIconSpans = (html: string): { fixed: string; count: number } => {
     if (!html.trim()) return { fixed: "", count: 0 };
     let count = 0;
+    let result = html;
     
-    // Match spans with icon classes that are empty or contain only whitespace
-    const fixed = html.replace(
+    // First: Fix empty icon spans
+    result = result.replace(
       /<span([^>]*class="[^"]*(?:ca-gov-icon-|external-link-icon|icon-)[^"]*"[^>]*)>(\s*)<\/span>/gi,
       (match, attributes, content) => {
-        // Only fix if empty or whitespace-only (doesn't already have &#8203;)
         if (!content.includes('&#8203;') && !content.includes('\u200B')) {
           count++;
           return `<span${attributes}>&#8203;</span>`;
@@ -276,18 +292,33 @@ const TextFormatterSection = () => {
         return match;
       }
     );
-    return { fixed, count };
+
+    // Second: Add icons to headings (h1-h6) that match patterns and don't already have icons
+    result = result.replace(
+      /<(h[1-6])([^>]*)>(?!.*<span[^>]*class="[^"]*ca-gov-icon)([^<]+)<\/\1>/gi,
+      (match, tag, attrs, text) => {
+        for (const mapping of iconMappings) {
+          if (mapping.pattern.test(text)) {
+            count++;
+            return `<${tag}${attrs}><span aria-hidden="true" class="${mapping.icon}">&#8203;</span> ${text.trim()}</${tag}>`;
+          }
+        }
+        return match;
+      }
+    );
+
+    return { fixed: result, count };
   };
 
   const handleFixIcons = () => {
-    if (!iconFixInput.trim()) { toast.error("Please enter HTML with icon spans"); return; }
+    if (!iconFixInput.trim()) { toast.error("Please enter HTML to fix"); return; }
     const { fixed, count } = fixIconSpans(iconFixInput);
     setIconFixOutput(fixed);
     setIconFixCount(count);
     if (count > 0) {
-      toast.success(`Fixed ${count} empty icon span${count > 1 ? "s" : ""}`);
+      toast.success(`Applied ${count} icon fix${count > 1 ? "es" : ""}`);
     } else {
-      toast.info("No empty icon spans found to fix");
+      toast.info("No fixes needed");
     }
   };
 
@@ -424,14 +455,15 @@ const TextFormatterSection = () => {
           <div className="bg-muted/50 p-3 rounded-lg text-sm mb-4">
             <p className="font-medium mb-1">Bulk Icon Fix for DNN Classic Editor</p>
             <p className="text-muted-foreground text-xs">
-              Paste HTML containing empty icon spans (e.g., <code className="bg-background px-1 rounded">&lt;span class="ca-gov-icon-..."&gt;&lt;/span&gt;</code>). 
-              This tool adds a zero-width space character (<code className="bg-background px-1 rounded">&amp;#8203;</code>) to prevent the DNN editor from removing them.
+              This tool does two things: <br />
+              1. Fixes empty icon spans by adding <code className="bg-background px-1 rounded">&amp;#8203;</code> to prevent DNN from removing them.<br />
+              2. Adds appropriate CA Gov icons to headings based on text (e.g., "Quick Links" → link icon, "Contact" → contact icon).
             </p>
           </div>
           <div className="grid md:grid-cols-2 gap-4">
             <div className="space-y-2">
               <label className="text-sm font-medium text-muted-foreground">Input HTML</label>
-              <Textarea value={iconFixInput} onChange={(e) => setIconFixInput(e.target.value)} placeholder="Paste HTML with empty icon spans here..." className="min-h-[200px] font-mono text-sm" />
+              <Textarea value={iconFixInput} onChange={(e) => setIconFixInput(e.target.value)} placeholder="Paste HTML here (e.g., <h4>Quick Links</h4>)..." className="min-h-[200px] font-mono text-sm" />
             </div>
             <div className="space-y-2">
               <div className="flex items-center justify-between">
