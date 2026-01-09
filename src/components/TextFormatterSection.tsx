@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Copy, Download, Trash2, Type, Code, Wand2, Palette, Braces } from "lucide-react";
+import { Copy, Download, Trash2, Type, Code, Wand2, Palette, Braces, Sparkles } from "lucide-react";
 import { toast } from "sonner";
 import { SectionHeader } from "./SectionHeader";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -14,6 +14,9 @@ const TextFormatterSection = () => {
   const [cssOutput, setCssOutput] = useState("");
   const [jsInput, setJsInput] = useState("");
   const [jsOutput, setJsOutput] = useState("");
+  const [iconFixInput, setIconFixInput] = useState("");
+  const [iconFixOutput, setIconFixOutput] = useState("");
+  const [iconFixCount, setIconFixCount] = useState(0);
 
   // Text case transformations
   const toSentenceCase = (str: string) => {
@@ -256,6 +259,58 @@ const TextFormatterSection = () => {
 
   const handleClearJS = () => { setJsInput(""); setJsOutput(""); toast.success("Cleared"); };
 
+  // Bulk Icon Fix - adds zero-width space to empty icon spans
+  const fixIconSpans = (html: string): { fixed: string; count: number } => {
+    if (!html.trim()) return { fixed: "", count: 0 };
+    let count = 0;
+    // Match empty spans with icon classes (ca-gov-icon-*, external-link-icon, etc.)
+    const fixed = html.replace(
+      /<span([^>]*class="[^"]*(?:ca-gov-icon-|external-link-icon|icon-)[^"]*"[^>]*)><\/span>/gi,
+      (match, attributes) => {
+        count++;
+        return `<span${attributes}>&#8203;</span>`;
+      }
+    );
+    return { fixed, count };
+  };
+
+  const handleFixIcons = () => {
+    if (!iconFixInput.trim()) { toast.error("Please enter HTML with icon spans"); return; }
+    const { fixed, count } = fixIconSpans(iconFixInput);
+    setIconFixOutput(fixed);
+    setIconFixCount(count);
+    if (count > 0) {
+      toast.success(`Fixed ${count} empty icon span${count > 1 ? "s" : ""}`);
+    } else {
+      toast.info("No empty icon spans found to fix");
+    }
+  };
+
+  const handleCopyIconFix = async () => {
+    if (!iconFixOutput) { toast.error("No fixed HTML to copy"); return; }
+    await navigator.clipboard.writeText(iconFixOutput);
+    toast.success("Copied to clipboard");
+  };
+
+  const handleDownloadIconFix = () => {
+    if (!iconFixOutput) { toast.error("No fixed HTML to download"); return; }
+    const blob = new Blob([iconFixOutput], { type: "text/html" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "fixed-icons.html";
+    a.click();
+    URL.revokeObjectURL(url);
+    toast.success("HTML downloaded");
+  };
+
+  const handleClearIconFix = () => { 
+    setIconFixInput(""); 
+    setIconFixOutput(""); 
+    setIconFixCount(0);
+    toast.success("Cleared"); 
+  };
+
   return (
     <div>
       <SectionHeader title="Text & Code Formatter" icon={<Type className="h-5 w-5" />} />
@@ -277,6 +332,10 @@ const TextFormatterSection = () => {
           <TabsTrigger value="js" className="flex items-center gap-1">
             <Braces className="h-4 w-4" />
             JavaScript
+          </TabsTrigger>
+          <TabsTrigger value="iconfix" className="flex items-center gap-1">
+            <Sparkles className="h-4 w-4" />
+            Icon Fix
           </TabsTrigger>
         </TabsList>
 
@@ -353,6 +412,39 @@ const TextFormatterSection = () => {
             <Button variant="secondary" size="sm" onClick={handleCopyJS} className="text-xs"><Copy className="h-3 w-3 mr-1" />Copy</Button>
             <Button variant="secondary" size="sm" onClick={handleDownloadJS} className="text-xs"><Download className="h-3 w-3 mr-1" />Download</Button>
             <Button variant="destructive" size="sm" onClick={handleClearJS} className="text-xs"><Trash2 className="h-3 w-3 mr-1" />Clear</Button>
+          </div>
+        </TabsContent>
+
+        <TabsContent value="iconfix" className="space-y-4">
+          <div className="bg-muted/50 p-3 rounded-lg text-sm mb-4">
+            <p className="font-medium mb-1">Bulk Icon Fix for DNN Classic Editor</p>
+            <p className="text-muted-foreground text-xs">
+              Paste HTML containing empty icon spans (e.g., <code className="bg-background px-1 rounded">&lt;span class="ca-gov-icon-..."&gt;&lt;/span&gt;</code>). 
+              This tool adds a zero-width space character (<code className="bg-background px-1 rounded">&amp;#8203;</code>) to prevent the DNN editor from removing them.
+            </p>
+          </div>
+          <div className="grid md:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-muted-foreground">Input HTML</label>
+              <Textarea value={iconFixInput} onChange={(e) => setIconFixInput(e.target.value)} placeholder="Paste HTML with empty icon spans here..." className="min-h-[200px] font-mono text-sm" />
+            </div>
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <label className="text-sm font-medium text-muted-foreground">Fixed Output</label>
+                {iconFixCount > 0 && (
+                  <span className="text-xs text-green-600 dark:text-green-400 font-medium">
+                    {iconFixCount} icon{iconFixCount > 1 ? "s" : ""} fixed
+                  </span>
+                )}
+              </div>
+              <Textarea value={iconFixOutput} readOnly placeholder="Fixed HTML will appear here..." className="min-h-[200px] font-mono text-sm bg-muted/50" />
+            </div>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            <Button variant="default" size="sm" onClick={handleFixIcons} className="text-xs"><Sparkles className="h-3 w-3 mr-1" />Fix Icons</Button>
+            <Button variant="secondary" size="sm" onClick={handleCopyIconFix} className="text-xs"><Copy className="h-3 w-3 mr-1" />Copy</Button>
+            <Button variant="secondary" size="sm" onClick={handleDownloadIconFix} className="text-xs"><Download className="h-3 w-3 mr-1" />Download</Button>
+            <Button variant="destructive" size="sm" onClick={handleClearIconFix} className="text-xs"><Trash2 className="h-3 w-3 mr-1" />Clear</Button>
           </div>
         </TabsContent>
       </Tabs>
