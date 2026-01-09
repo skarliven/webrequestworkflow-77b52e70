@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Copy, Download, Trash2, Type, Code, Wand2, Palette, Braces, Sparkles } from "lucide-react";
+import { Copy, Download, Trash2, Type, Code, Wand2, Palette, Braces, Sparkles, Eraser } from "lucide-react";
 import { toast } from "sonner";
 import { SectionHeader } from "./SectionHeader";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -17,6 +17,9 @@ const TextFormatterSection = () => {
   const [iconFixInput, setIconFixInput] = useState("");
   const [iconFixOutput, setIconFixOutput] = useState("");
   const [iconFixCount, setIconFixCount] = useState(0);
+  const [cleanupInput, setCleanupInput] = useState("");
+  const [cleanupOutput, setCleanupOutput] = useState("");
+  const [cleanupProblems, setCleanupProblems] = useState<string[]>([]);
 
   // Text case transformations
   const toSentenceCase = (str: string) => {
@@ -347,6 +350,136 @@ const TextFormatterSection = () => {
     toast.success("Cleared"); 
   };
 
+  // HTML Cleanup - finds and fixes common problems
+  const cleanupHTML = (html: string): { cleaned: string; problems: string[] } => {
+    if (!html.trim()) return { cleaned: "", problems: [] };
+    const problems: string[] = [];
+    let result = html;
+
+    // Fix multiple consecutive spaces
+    const multiSpaceMatches = result.match(/  +/g);
+    if (multiSpaceMatches) {
+      problems.push(`Fixed ${multiSpaceMatches.length} instances of multiple consecutive spaces`);
+      result = result.replace(/  +/g, " ");
+    }
+
+    // Fix multiple consecutive &nbsp;
+    const nbspMatches = result.match(/(&nbsp;){2,}/g);
+    if (nbspMatches) {
+      problems.push(`Fixed ${nbspMatches.length} instances of multiple &nbsp;`);
+      result = result.replace(/(&nbsp;){2,}/g, "&nbsp;");
+    }
+
+    // Remove empty paragraphs (with only spaces, &nbsp;, or nothing)
+    const emptyPMatches = result.match(/<p[^>]*>(\s|&nbsp;)*<\/p>/gi);
+    if (emptyPMatches) {
+      problems.push(`Removed ${emptyPMatches.length} empty paragraph(s)`);
+      result = result.replace(/<p[^>]*>(\s|&nbsp;)*<\/p>/gi, "");
+    }
+
+    // Remove empty divs (with only spaces or nothing)
+    const emptyDivMatches = result.match(/<div[^>]*>\s*<\/div>/gi);
+    if (emptyDivMatches) {
+      problems.push(`Removed ${emptyDivMatches.length} empty div(s)`);
+      result = result.replace(/<div[^>]*>\s*<\/div>/gi, "");
+    }
+
+    // Remove empty spans (except icon spans)
+    const emptySpanRegex = /<span(?![^>]*class="[^"]*(?:ca-gov-icon|icon-|external-link))[^>]*>\s*<\/span>/gi;
+    const emptySpanMatches = result.match(emptySpanRegex);
+    if (emptySpanMatches) {
+      problems.push(`Removed ${emptySpanMatches.length} empty span(s)`);
+      result = result.replace(emptySpanRegex, "");
+    }
+
+    // Remove redundant <br> tags (more than 2 consecutive)
+    const brMatches = result.match(/(<br\s*\/?>\s*){3,}/gi);
+    if (brMatches) {
+      problems.push(`Reduced ${brMatches.length} excessive line breaks`);
+      result = result.replace(/(<br\s*\/?>\s*){3,}/gi, "<br><br>");
+    }
+
+    // Fix spaces before punctuation
+    const punctSpaceMatches = result.match(/\s+([.,;:!?])/g);
+    if (punctSpaceMatches) {
+      problems.push(`Fixed ${punctSpaceMatches.length} space(s) before punctuation`);
+      result = result.replace(/\s+([.,;:!?])/g, "$1");
+    }
+
+    // Remove inline styles with empty values
+    const emptyStyleMatches = result.match(/style="\s*"/gi);
+    if (emptyStyleMatches) {
+      problems.push(`Removed ${emptyStyleMatches.length} empty style attribute(s)`);
+      result = result.replace(/\s*style="\s*"/gi, "");
+    }
+
+    // Remove empty class attributes
+    const emptyClassMatches = result.match(/class="\s*"/gi);
+    if (emptyClassMatches) {
+      problems.push(`Removed ${emptyClassMatches.length} empty class attribute(s)`);
+      result = result.replace(/\s*class="\s*"/gi, "");
+    }
+
+    // Remove empty href="#" links (keeping the text)
+    const emptyHrefMatches = result.match(/<a\s+href="#"\s*>([^<]*)<\/a>/gi);
+    if (emptyHrefMatches) {
+      problems.push(`Removed ${emptyHrefMatches.length} empty anchor link(s)`);
+      result = result.replace(/<a\s+href="#"\s*>([^<]*)<\/a>/gi, "$1");
+    }
+
+    // Remove HTML comments
+    const commentMatches = result.match(/<!--[\s\S]*?-->/g);
+    if (commentMatches) {
+      problems.push(`Removed ${commentMatches.length} HTML comment(s)`);
+      result = result.replace(/<!--[\s\S]*?-->/g, "");
+    }
+
+    // Clean up whitespace between tags
+    result = result.replace(/>\s+</g, ">\n<");
+
+    // Trim lines
+    result = result.split("\n").map(line => line.trim()).filter(line => line).join("\n");
+
+    return { cleaned: result, problems };
+  };
+
+  const handleCleanupHTML = () => {
+    if (!cleanupInput.trim()) { toast.error("Please enter HTML to clean up"); return; }
+    const { cleaned, problems } = cleanupHTML(cleanupInput);
+    setCleanupOutput(cleaned);
+    setCleanupProblems(problems);
+    if (problems.length > 0) {
+      toast.success(`Found and fixed ${problems.length} problem(s)`);
+    } else {
+      toast.info("No problems found");
+    }
+  };
+
+  const handleCopyCleanup = async () => {
+    if (!cleanupOutput) { toast.error("No cleaned HTML to copy"); return; }
+    await navigator.clipboard.writeText(cleanupOutput);
+    toast.success("Copied to clipboard");
+  };
+
+  const handleDownloadCleanup = () => {
+    if (!cleanupOutput) { toast.error("No cleaned HTML to download"); return; }
+    const blob = new Blob([cleanupOutput], { type: "text/html" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "cleaned.html";
+    a.click();
+    URL.revokeObjectURL(url);
+    toast.success("HTML downloaded");
+  };
+
+  const handleClearCleanup = () => { 
+    setCleanupInput(""); 
+    setCleanupOutput(""); 
+    setCleanupProblems([]);
+    toast.success("Cleared"); 
+  };
+
   return (
     <div>
       <SectionHeader title="Text & Code Formatter" icon={<Type className="h-5 w-5" />} />
@@ -372,6 +505,10 @@ const TextFormatterSection = () => {
           <TabsTrigger value="iconfix" className="flex items-center gap-1">
             <Sparkles className="h-4 w-4" />
             Icon Fix
+          </TabsTrigger>
+          <TabsTrigger value="cleanup" className="flex items-center gap-1">
+            <Eraser className="h-4 w-4" />
+            HTML Cleanup
           </TabsTrigger>
         </TabsList>
 
@@ -482,6 +619,41 @@ const TextFormatterSection = () => {
             <Button variant="secondary" size="sm" onClick={handleCopyIconFix} className="text-xs"><Copy className="h-3 w-3 mr-1" />Copy</Button>
             <Button variant="secondary" size="sm" onClick={handleDownloadIconFix} className="text-xs"><Download className="h-3 w-3 mr-1" />Download</Button>
             <Button variant="destructive" size="sm" onClick={handleClearIconFix} className="text-xs"><Trash2 className="h-3 w-3 mr-1" />Clear</Button>
+          </div>
+        </TabsContent>
+
+        <TabsContent value="cleanup" className="space-y-4">
+          <div className="bg-muted/50 p-3 rounded-lg text-sm mb-4">
+            <p className="font-medium mb-1">HTML Cleanup Tool</p>
+            <p className="text-muted-foreground text-xs">
+              Finds and fixes common HTML problems: multiple spaces, empty tags, excessive line breaks, empty attributes, and removes unnecessary code.
+            </p>
+          </div>
+          <div className="grid md:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-muted-foreground">Input HTML</label>
+              <Textarea value={cleanupInput} onChange={(e) => setCleanupInput(e.target.value)} placeholder="Paste messy HTML here..." className="min-h-[200px] font-mono text-sm" />
+            </div>
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-muted-foreground">Cleaned Output</label>
+              <Textarea value={cleanupOutput} readOnly placeholder="Cleaned HTML will appear here..." className="min-h-[200px] font-mono text-sm bg-muted/50" />
+            </div>
+          </div>
+          {cleanupProblems.length > 0 && (
+            <div className="bg-green-50 dark:bg-green-950/30 border border-green-200 dark:border-green-800 p-3 rounded-lg">
+              <p className="text-sm font-medium text-green-800 dark:text-green-200 mb-2">Problems Fixed:</p>
+              <ul className="text-xs text-green-700 dark:text-green-300 space-y-1">
+                {cleanupProblems.map((problem, index) => (
+                  <li key={index}>✓ {problem}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+          <div className="flex flex-wrap gap-2">
+            <Button variant="default" size="sm" onClick={handleCleanupHTML} className="text-xs"><Eraser className="h-3 w-3 mr-1" />Clean Up</Button>
+            <Button variant="secondary" size="sm" onClick={handleCopyCleanup} className="text-xs"><Copy className="h-3 w-3 mr-1" />Copy</Button>
+            <Button variant="secondary" size="sm" onClick={handleDownloadCleanup} className="text-xs"><Download className="h-3 w-3 mr-1" />Download</Button>
+            <Button variant="destructive" size="sm" onClick={handleClearCleanup} className="text-xs"><Trash2 className="h-3 w-3 mr-1" />Clear</Button>
           </div>
         </TabsContent>
       </Tabs>
