@@ -3,19 +3,19 @@ import { SectionHeader } from "./SectionHeader";
 import { TemplateCard } from "./TemplateCard";
 
 const icons = [
-  { name: "Download", code: '<span aria-hidden="true" class="ca-gov-icon-download"></span>' },
-  { name: "Link", code: '<span aria-hidden="true" class="ca-gov-icon-link"></span>' },
-  { name: "Calendar", code: '<span aria-hidden="true" class="ca-gov-icon-calendar"></span>' },
-  { name: "Info", code: '<span aria-hidden="true" class="ca-gov-icon-info"></span>' },
-  { name: "Justice/Legal", code: '<span aria-hidden="true" class="ca-gov-icon-justice-legal"></span>' },
-  { name: "Contact Us", code: '<span aria-hidden="true" class="ca-gov-icon-contact-us"></span>' },
-  { name: "Favorite", code: '<span aria-hidden="true" class="ca-gov-icon-favorite"></span>' },
-  { name: "YouTube", code: '<span aria-hidden="true" class="ca-gov-icon-youtube"></span>' },
-  { name: "Facebook", code: '<span aria-hidden="true" class="ca-gov-icon-facebook"></span>' },
-  { name: "Email", code: '<span aria-hidden="true" class="ca-gov-icon-email"></span>' },
-  { name: "Instagram", code: '<span aria-hidden="true" class="ca-gov-icon-instagram"></span>' },
-  { name: "LinkedIn", code: '<span aria-hidden="true" class="ca-gov-icon-linkedin"></span>' },
-  { name: "External Link", code: '<span class="external-link-icon" aria-hidden="true"></span>' },
+  { name: "Download", code: '<span aria-hidden="true" class="ca-gov-icon-download">&#8203;</span>' },
+  { name: "Link", code: '<span aria-hidden="true" class="ca-gov-icon-link">&#8203;</span>' },
+  { name: "Calendar", code: '<span aria-hidden="true" class="ca-gov-icon-calendar">&#8203;</span>' },
+  { name: "Info", code: '<span aria-hidden="true" class="ca-gov-icon-info">&#8203;</span>' },
+  { name: "Justice/Legal", code: '<span aria-hidden="true" class="ca-gov-icon-justice-legal">&#8203;</span>' },
+  { name: "Contact Us", code: '<span aria-hidden="true" class="ca-gov-icon-contact-us">&#8203;</span>' },
+  { name: "Favorite", code: '<span aria-hidden="true" class="ca-gov-icon-favorite">&#8203;</span>' },
+  { name: "YouTube", code: '<span aria-hidden="true" class="ca-gov-icon-youtube">&#8203;</span>' },
+  { name: "Facebook", code: '<span aria-hidden="true" class="ca-gov-icon-facebook">&#8203;</span>' },
+  { name: "Email", code: '<span aria-hidden="true" class="ca-gov-icon-email">&#8203;</span>' },
+  { name: "Instagram", code: '<span aria-hidden="true" class="ca-gov-icon-instagram">&#8203;</span>' },
+  { name: "LinkedIn", code: '<span aria-hidden="true" class="ca-gov-icon-linkedin">&#8203;</span>' },
+  { name: "External Link", code: '<span class="external-link-icon" aria-hidden="true">&#8203;</span>' },
 ];
 
 interface IconsSectionProps {
