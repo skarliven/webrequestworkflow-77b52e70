@@ -1,105 +1,86 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Copy, Download, Trash2, Type, Code, Wand2, Palette, Braces, Sparkles, Eraser, GitCompare } from "lucide-react";
+import { Copy, Download, Trash2, Type, Code, Wand2, Palette, Braces, Sparkles, Eraser, Columns2 } from "lucide-react";
 import { toast } from "sonner";
 import { SectionHeader } from "./SectionHeader";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-// Diff types
-type DiffPart = {
-  type: 'unchanged' | 'added' | 'removed';
-  value: string;
-};
-
-// Simple line-based diff algorithm
-const computeLineDiff = (oldText: string, newText: string): DiffPart[] => {
-  const oldLines = oldText.split('\n');
-  const newLines = newText.split('\n');
-  const result: DiffPart[] = [];
-  
-  let oldIndex = 0;
-  let newIndex = 0;
-  
-  while (oldIndex < oldLines.length || newIndex < newLines.length) {
-    if (oldIndex >= oldLines.length) {
-      // Remaining new lines are additions
-      result.push({ type: 'added', value: newLines[newIndex] });
-      newIndex++;
-    } else if (newIndex >= newLines.length) {
-      // Remaining old lines are removals
-      result.push({ type: 'removed', value: oldLines[oldIndex] });
-      oldIndex++;
-    } else if (oldLines[oldIndex] === newLines[newIndex]) {
-      // Lines match
-      result.push({ type: 'unchanged', value: oldLines[oldIndex] });
-      oldIndex++;
-      newIndex++;
-    } else {
-      // Check if old line exists later in new
-      const foundInNew = newLines.slice(newIndex + 1).indexOf(oldLines[oldIndex]);
-      // Check if new line exists later in old
-      const foundInOld = oldLines.slice(oldIndex + 1).indexOf(newLines[newIndex]);
-      
-      if (foundInNew !== -1 && (foundInOld === -1 || foundInNew <= foundInOld)) {
-        // New line was added
-        result.push({ type: 'added', value: newLines[newIndex] });
-        newIndex++;
-      } else if (foundInOld !== -1) {
-        // Old line was removed
-        result.push({ type: 'removed', value: oldLines[oldIndex] });
-        oldIndex++;
-      } else {
-        // Both lines changed - show as removal then addition
-        result.push({ type: 'removed', value: oldLines[oldIndex] });
-        result.push({ type: 'added', value: newLines[newIndex] });
-        oldIndex++;
-        newIndex++;
-      }
-    }
-  }
-  
-  return result;
-};
-
-// Diff view component
-const DiffView = ({ oldText, newText }: { oldText: string; newText: string }) => {
-  if (!oldText && !newText) {
+// Side-by-side comparison component
+const SideBySideView = ({ leftText, rightText, leftLabel, rightLabel }: { 
+  leftText: string; 
+  rightText: string;
+  leftLabel: string;
+  rightLabel: string;
+}) => {
+  if (!leftText && !rightText) {
     return (
       <div className="text-muted-foreground text-sm text-center py-8">
-        Run cleanup to see the diff comparison
+        Run cleanup to see the side-by-side comparison
       </div>
     );
   }
-  
-  const diff = computeLineDiff(oldText, newText);
-  
+
+  const leftLines = leftText.split('\n');
+  const rightLines = rightText.split('\n');
+  const maxLines = Math.max(leftLines.length, rightLines.length);
+
   return (
-    <div className="font-mono text-xs overflow-auto max-h-[300px] border rounded-lg bg-background">
-      {diff.map((part, index) => {
-        if (part.type === 'unchanged') {
-          return (
-            <div key={index} className="px-3 py-0.5 border-l-4 border-transparent">
-              <span className="text-muted-foreground select-none mr-2">  </span>
-              {part.value || '\u00A0'}
-            </div>
-          );
-        } else if (part.type === 'removed') {
-          return (
-            <div key={index} className="px-3 py-0.5 bg-red-100 dark:bg-red-950/50 border-l-4 border-red-500">
-              <span className="text-red-600 dark:text-red-400 select-none mr-2">−</span>
-              <span className="text-red-700 dark:text-red-300">{part.value || '\u00A0'}</span>
-            </div>
-          );
-        } else {
-          return (
-            <div key={index} className="px-3 py-0.5 bg-green-100 dark:bg-green-950/50 border-l-4 border-green-500">
-              <span className="text-green-600 dark:text-green-400 select-none mr-2">+</span>
-              <span className="text-green-700 dark:text-green-300">{part.value || '\u00A0'}</span>
-            </div>
-          );
-        }
-      })}
+    <div className="border rounded-lg overflow-hidden">
+      {/* Headers */}
+      <div className="grid grid-cols-2 bg-muted/50 border-b">
+        <div className="px-3 py-2 text-sm font-medium text-muted-foreground border-r">
+          {leftLabel}
+        </div>
+        <div className="px-3 py-2 text-sm font-medium text-muted-foreground">
+          {rightLabel}
+        </div>
+      </div>
+      {/* Content */}
+      <div className="grid grid-cols-2 font-mono text-xs overflow-auto max-h-[300px]">
+        {/* Left side - Original */}
+        <div className="border-r bg-red-50/30 dark:bg-red-950/10">
+          {Array.from({ length: maxLines }).map((_, index) => {
+            const line = leftLines[index] || '';
+            const rightLine = rightLines[index] || '';
+            const isDifferent = line !== rightLine;
+            return (
+              <div 
+                key={index} 
+                className={`px-3 py-0.5 min-h-[1.5rem] ${isDifferent && line ? 'bg-red-100 dark:bg-red-950/40' : ''}`}
+              >
+                <span className="text-muted-foreground select-none mr-2 inline-block w-6 text-right">
+                  {index + 1}
+                </span>
+                <span className={isDifferent && line ? 'text-red-700 dark:text-red-300' : ''}>
+                  {line || '\u00A0'}
+                </span>
+              </div>
+            );
+          })}
+        </div>
+        {/* Right side - Cleaned */}
+        <div className="bg-green-50/30 dark:bg-green-950/10">
+          {Array.from({ length: maxLines }).map((_, index) => {
+            const line = rightLines[index] || '';
+            const leftLine = leftLines[index] || '';
+            const isDifferent = line !== leftLine;
+            return (
+              <div 
+                key={index} 
+                className={`px-3 py-0.5 min-h-[1.5rem] ${isDifferent && line ? 'bg-green-100 dark:bg-green-950/40' : ''}`}
+              >
+                <span className="text-muted-foreground select-none mr-2 inline-block w-6 text-right">
+                  {index + 1}
+                </span>
+                <span className={isDifferent && line ? 'text-green-700 dark:text-green-300' : ''}>
+                  {line || '\u00A0'}
+                </span>
+              </div>
+            );
+          })}
+        </div>
+      </div>
     </div>
   );
 };
@@ -738,17 +719,19 @@ const TextFormatterSection = () => {
             </div>
           </div>
           
-          {/* Diff View */}
+          {/* Side-by-Side Comparison */}
           {(cleanupInput || cleanupOutput) && (
             <div className="space-y-2">
               <div className="flex items-center gap-2">
-                <GitCompare className="h-4 w-4 text-muted-foreground" />
-                <label className="text-sm font-medium text-muted-foreground">Diff Comparison</label>
-                <span className="text-xs text-muted-foreground ml-2">
-                  (<span className="text-red-600 dark:text-red-400">−</span> removed, <span className="text-green-600 dark:text-green-400">+</span> added)
-                </span>
+                <Columns2 className="h-4 w-4 text-muted-foreground" />
+                <label className="text-sm font-medium text-muted-foreground">Side-by-Side Comparison</label>
               </div>
-              <DiffView oldText={cleanupInput} newText={cleanupOutput} />
+              <SideBySideView 
+                leftText={cleanupInput} 
+                rightText={cleanupOutput} 
+                leftLabel="Original HTML"
+                rightLabel="Cleaned HTML"
+              />
             </div>
           )}
           
