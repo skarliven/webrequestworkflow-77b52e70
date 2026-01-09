@@ -259,16 +259,21 @@ const TextFormatterSection = () => {
 
   const handleClearJS = () => { setJsInput(""); setJsOutput(""); toast.success("Cleared"); };
 
-  // Bulk Icon Fix - adds zero-width space to empty icon spans
+  // Bulk Icon Fix - adds zero-width space to empty icon spans and spans with only whitespace
   const fixIconSpans = (html: string): { fixed: string; count: number } => {
     if (!html.trim()) return { fixed: "", count: 0 };
     let count = 0;
-    // Match empty spans with icon classes (ca-gov-icon-*, external-link-icon, etc.)
+    
+    // Match spans with icon classes that are empty or contain only whitespace
     const fixed = html.replace(
-      /<span([^>]*class="[^"]*(?:ca-gov-icon-|external-link-icon|icon-)[^"]*"[^>]*)><\/span>/gi,
-      (match, attributes) => {
-        count++;
-        return `<span${attributes}>&#8203;</span>`;
+      /<span([^>]*class="[^"]*(?:ca-gov-icon-|external-link-icon|icon-)[^"]*"[^>]*)>(\s*)<\/span>/gi,
+      (match, attributes, content) => {
+        // Only fix if empty or whitespace-only (doesn't already have &#8203;)
+        if (!content.includes('&#8203;') && !content.includes('\u200B')) {
+          count++;
+          return `<span${attributes}>&#8203;</span>`;
+        }
+        return match;
       }
     );
     return { fixed, count };
