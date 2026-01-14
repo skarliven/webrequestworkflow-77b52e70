@@ -4,6 +4,11 @@ import { TemplateCard } from "./TemplateCard";
 
 const paths = [
   { name: "Certification Actions", path: "/Portals/0/post_docs/Certification_Actions/" },
+  { name: "Determination Notices", path: "/Portals/0/post_docs/Certification_Actions/Determination_Notices/" },
+  { name: "Pleadings Orders", path: "/Portals/0/post_docs/Certification_Actions/Pleadings_Orders/" },
+  { name: "Revocation Orders", path: "/Portals/0/post_docs/Certification_Actions/Revocation_Orders/" },
+  { name: "Statement of Findings", path: "/Portals/0/post_docs/Certification_Actions/Statement_of_Findings/" },
+  { name: "Suspension Orders", path: "/Portals/0/post_docs/Certification_Actions/Suspension_Orders/" },
   { name: "Commission Meetings", path: "/Portals/0/post_docs/commissionmeetings/2025/xx.pdf" },
   { name: "POST Docs Root", path: "/Portals/0/post_docs/" },
   { name: "Documents Root", path: "/Portals/0/Documents/" },
