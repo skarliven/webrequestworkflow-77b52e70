@@ -4,6 +4,7 @@ import { TemplateCard } from "./TemplateCard";
 
 const paths = [
   { name: "Certification Actions", path: "/Portals/0/post_docs/Certification_Actions/" },
+  { name: "Commission Meetings", path: "/Portals/0/post_docs/commissionmeetings/2025/xx.pdf" },
   { name: "POST Docs Root", path: "/Portals/0/post_docs/" },
   { name: "Documents Root", path: "/Portals/0/Documents/" },
   { name: "Images Root", path: "/Portals/0/Images/" },
