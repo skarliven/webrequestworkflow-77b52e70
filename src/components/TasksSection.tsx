@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
-import { Plus, Trash2, Check, Circle, ListTodo, CalendarIcon, Flag, Pencil } from "lucide-react";
-import { format, isPast, isToday } from "date-fns";
+import { Plus, Trash2, Check, Circle, ListTodo, CalendarIcon, Flag, Pencil, LogIn, LogOut, Cloud } from "lucide-react";
+import { format, isPast, isToday, parseISO } from "date-fns";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { SectionHeader } from "@/components/SectionHeader";
@@ -19,17 +19,10 @@ import {
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
-
-type Priority = "low" | "medium" | "high";
-
-interface Task {
-  id: string;
-  text: string;
-  completed: boolean;
-  createdAt: number;
-  priority: Priority;
-  dueDate?: string;
-}
+import { useAuth } from "@/contexts/AuthContext";
+import { useTasks, Priority, Task } from "@/hooks/useTasks";
+import { AuthModal } from "@/components/AuthModal";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface TasksSectionProps {
   searchQuery: string;
@@ -54,26 +47,15 @@ const priorityConfig: Record<Priority, { label: string; className: string; badge
 };
 
 export const TasksSection = ({ searchQuery }: TasksSectionProps) => {
-  const [tasks, setTasks] = useState<Task[]>([]);
+  const { user, loading: authLoading, signOut } = useAuth();
+  const { tasks, isLoading, createTask, updateTask, deleteTask } = useTasks();
   const [newTask, setNewTask] = useState("");
   const [newPriority, setNewPriority] = useState<Priority>("medium");
   const [newDueDate, setNewDueDate] = useState<Date | undefined>();
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editText, setEditText] = useState("");
+  const [authModalOpen, setAuthModalOpen] = useState(false);
   const editInputRef = useRef<HTMLInputElement>(null);
-
-  // Load tasks from localStorage on mount
-  useEffect(() => {
-    const saved = localStorage.getItem("workflowhub-tasks");
-    if (saved) {
-      setTasks(JSON.parse(saved));
-    }
-  }, []);
-
-  // Save tasks to localStorage whenever they change
-  useEffect(() => {
-    localStorage.setItem("workflowhub-tasks", JSON.stringify(tasks));
-  }, [tasks]);
 
   // Focus edit input when editing starts
   useEffect(() => {
@@ -83,30 +65,27 @@ export const TasksSection = ({ searchQuery }: TasksSectionProps) => {
     }
   }, [editingId]);
 
-  const addTask = () => {
+  const handleAddTask = () => {
     if (!newTask.trim()) return;
-    const task: Task = {
-      id: crypto.randomUUID(),
+    createTask.mutate({
       text: newTask.trim(),
-      completed: false,
-      createdAt: Date.now(),
       priority: newPriority,
-      dueDate: newDueDate ? format(newDueDate, "yyyy-MM-dd") : undefined,
-    };
-    setTasks([task, ...tasks]);
+      due_date: newDueDate ? format(newDueDate, "yyyy-MM-dd") : null,
+    });
     setNewTask("");
     setNewPriority("medium");
     setNewDueDate(undefined);
   };
 
-  const toggleTask = (id: string) => {
-    setTasks(tasks.map(t => 
-      t.id === id ? { ...t, completed: !t.completed } : t
-    ));
+  const handleToggleTask = (task: Task) => {
+    updateTask.mutate({
+      id: task.id,
+      updates: { completed: !task.completed },
+    });
   };
 
-  const deleteTask = (id: string) => {
-    setTasks(tasks.filter(t => t.id !== id));
+  const handleDeleteTask = (id: string) => {
+    deleteTask.mutate(id);
   };
 
   const startEditing = (task: Task) => {
@@ -119,9 +98,10 @@ export const TasksSection = ({ searchQuery }: TasksSectionProps) => {
       setEditingId(null);
       return;
     }
-    setTasks(tasks.map(t => 
-      t.id === editingId ? { ...t, text: editText.trim() } : t
-    ));
+    updateTask.mutate({
+      id: editingId,
+      updates: { text: editText.trim() },
+    });
     setEditingId(null);
     setEditText("");
   };
@@ -141,13 +121,13 @@ export const TasksSection = ({ searchQuery }: TasksSectionProps) => {
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === "Enter") {
-      addTask();
+      handleAddTask();
     }
   };
 
-  const getDueDateDisplay = (dueDate?: string) => {
+  const getDueDateDisplay = (dueDate?: string | null) => {
     if (!dueDate) return null;
-    const date = new Date(dueDate);
+    const date = parseISO(dueDate);
     const overdue = isPast(date) && !isToday(date);
     const today = isToday(date);
     
@@ -177,23 +157,60 @@ export const TasksSection = ({ searchQuery }: TasksSectionProps) => {
       if (priorityOrder[a.priority] !== priorityOrder[b.priority]) {
         return priorityOrder[a.priority] - priorityOrder[b.priority];
       }
-      if (a.dueDate && b.dueDate) {
-        return new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime();
+      if (a.due_date && b.due_date) {
+        return new Date(a.due_date).getTime() - new Date(b.due_date).getTime();
       }
-      if (a.dueDate) return -1;
-      if (b.dueDate) return 1;
+      if (a.due_date) return -1;
+      if (b.due_date) return 1;
       return 0;
     });
 
   const completedTasks = filteredTasks.filter(t => t.completed);
 
+  // Show sign-in prompt if not authenticated
+  if (!authLoading && !user) {
+    return (
+      <div className="space-y-6">
+        <SectionHeader
+          title="To-Do / Pending Tasks"
+          icon={<ListTodo className="h-5 w-5" />}
+        />
+        <div className="text-center py-12 border border-dashed border-border/50 rounded-lg">
+          <Cloud className="h-12 w-12 mx-auto text-muted-foreground/50 mb-4" />
+          <h3 className="text-lg font-medium mb-2">Sync Tasks Across Devices</h3>
+          <p className="text-muted-foreground text-sm mb-4 max-w-md mx-auto">
+            Sign in to save your tasks to the cloud and access them from any device or browser.
+          </p>
+          <Button onClick={() => setAuthModalOpen(true)} className="gap-2">
+            <LogIn className="h-4 w-4" />
+            Sign In to Continue
+          </Button>
+        </div>
+        <AuthModal open={authModalOpen} onOpenChange={setAuthModalOpen} />
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6">
-      <SectionHeader
-        title="To-Do / Pending Tasks"
-        icon={<ListTodo className="h-5 w-5" />}
-        count={sortedPendingTasks.length}
-      />
+      <div className="flex items-center justify-between">
+        <SectionHeader
+          title="To-Do / Pending Tasks"
+          icon={<ListTodo className="h-5 w-5" />}
+          count={sortedPendingTasks.length}
+        />
+        {user && (
+          <div className="flex items-center gap-2">
+            <Badge variant="secondary" className="gap-1.5 text-xs">
+              <Cloud className="h-3 w-3" />
+              Synced
+            </Badge>
+            <Button variant="ghost" size="sm" onClick={() => signOut()} className="text-muted-foreground">
+              <LogOut className="h-4 w-4" />
+            </Button>
+          </div>
+        )}
+      </div>
 
       {/* Add Task Input */}
       <div className="space-y-3">
@@ -205,7 +222,7 @@ export const TasksSection = ({ searchQuery }: TasksSectionProps) => {
             placeholder="Add a new task..."
             className="flex-1 bg-card border-border/50 focus:border-primary"
           />
-          <Button onClick={addTask} className="gap-2">
+          <Button onClick={handleAddTask} className="gap-2" disabled={createTask.isPending}>
             <Plus className="h-4 w-4" />
             Add
           </Button>
@@ -265,84 +282,95 @@ export const TasksSection = ({ searchQuery }: TasksSectionProps) => {
         </div>
       </div>
 
+      {/* Loading state */}
+      {isLoading && (
+        <div className="space-y-2">
+          <Skeleton className="h-16 w-full" />
+          <Skeleton className="h-16 w-full" />
+          <Skeleton className="h-16 w-full" />
+        </div>
+      )}
+
       {/* Pending Tasks */}
-      <div className="space-y-2">
-        <h3 className="text-sm font-medium text-muted-foreground flex items-center gap-2">
-          <Circle className="h-4 w-4 text-primary" />
-          Pending ({sortedPendingTasks.length})
-        </h3>
-        {sortedPendingTasks.length === 0 ? (
-          <p className="text-sm text-muted-foreground/60 py-4 text-center border border-dashed border-border/50 rounded-lg">
-            No pending tasks. Add one above!
-          </p>
-        ) : (
-          <div className="space-y-2">
-            {sortedPendingTasks.map((task) => (
-              <div
-                key={task.id}
-                className={cn(
-                  "flex items-center gap-3 p-3 bg-card rounded-lg border border-border/50 hover:border-primary/30 transition-colors group",
-                  priorityConfig[task.priority].className
-                )}
-              >
-                <button
-                  onClick={() => toggleTask(task.id)}
-                  className="h-5 w-5 rounded-full border-2 border-muted-foreground/50 hover:border-primary flex items-center justify-center transition-colors shrink-0"
-                >
-                  <span className="sr-only">Complete task</span>
-                </button>
-                <div className="flex-1 min-w-0">
-                  {editingId === task.id ? (
-                    <Input
-                      ref={editInputRef}
-                      value={editText}
-                      onChange={(e) => setEditText(e.target.value)}
-                      onKeyDown={handleEditKeyDown}
-                      onBlur={saveEdit}
-                      className="text-sm h-7 bg-background border-primary"
-                      maxLength={500}
-                    />
-                  ) : (
-                    <span 
-                      className="text-sm block cursor-pointer hover:text-primary transition-colors"
-                      onClick={() => startEditing(task)}
-                      title="Click to edit"
-                    >
-                      {task.text}
-                    </span>
+      {!isLoading && (
+        <div className="space-y-2">
+          <h3 className="text-sm font-medium text-muted-foreground flex items-center gap-2">
+            <Circle className="h-4 w-4 text-primary" />
+            Pending ({sortedPendingTasks.length})
+          </h3>
+          {sortedPendingTasks.length === 0 ? (
+            <p className="text-sm text-muted-foreground/60 py-4 text-center border border-dashed border-border/50 rounded-lg">
+              No pending tasks. Add one above!
+            </p>
+          ) : (
+            <div className="space-y-2">
+              {sortedPendingTasks.map((task) => (
+                <div
+                  key={task.id}
+                  className={cn(
+                    "flex items-center gap-3 p-3 bg-card rounded-lg border border-border/50 hover:border-primary/30 transition-colors group",
+                    priorityConfig[task.priority].className
                   )}
-                  <div className="flex items-center gap-2 mt-1">
-                    <Badge variant="secondary" className={cn("text-xs px-1.5 py-0", priorityConfig[task.priority].badgeClass)}>
-                      {priorityConfig[task.priority].label}
-                    </Badge>
-                    {getDueDateDisplay(task.dueDate)}
+                >
+                  <button
+                    onClick={() => handleToggleTask(task)}
+                    className="h-5 w-5 rounded-full border-2 border-muted-foreground/50 hover:border-primary flex items-center justify-center transition-colors shrink-0"
+                  >
+                    <span className="sr-only">Complete task</span>
+                  </button>
+                  <div className="flex-1 min-w-0">
+                    {editingId === task.id ? (
+                      <Input
+                        ref={editInputRef}
+                        value={editText}
+                        onChange={(e) => setEditText(e.target.value)}
+                        onKeyDown={handleEditKeyDown}
+                        onBlur={saveEdit}
+                        className="text-sm h-7 bg-background border-primary"
+                        maxLength={500}
+                      />
+                    ) : (
+                      <span 
+                        className="text-sm block cursor-pointer hover:text-primary transition-colors"
+                        onClick={() => startEditing(task)}
+                        title="Click to edit"
+                      >
+                        {task.text}
+                      </span>
+                    )}
+                    <div className="flex items-center gap-2 mt-1">
+                      <Badge variant="secondary" className={cn("text-xs px-1.5 py-0", priorityConfig[task.priority].badgeClass)}>
+                        {priorityConfig[task.priority].label}
+                      </Badge>
+                      {getDueDateDisplay(task.due_date)}
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-1 shrink-0">
+                    {editingId !== task.id && (
+                      <button
+                        onClick={() => startEditing(task)}
+                        className="opacity-0 group-hover:opacity-100 text-muted-foreground hover:text-primary transition-all p-1"
+                        title="Edit task"
+                      >
+                        <Pencil className="h-3.5 w-3.5" />
+                      </button>
+                    )}
+                    <button
+                      onClick={() => handleDeleteTask(task.id)}
+                      className="opacity-0 group-hover:opacity-100 text-muted-foreground hover:text-destructive transition-all"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </button>
                   </div>
                 </div>
-                <div className="flex items-center gap-1 shrink-0">
-                  {editingId !== task.id && (
-                    <button
-                      onClick={() => startEditing(task)}
-                      className="opacity-0 group-hover:opacity-100 text-muted-foreground hover:text-primary transition-all p-1"
-                      title="Edit task"
-                    >
-                      <Pencil className="h-3.5 w-3.5" />
-                    </button>
-                  )}
-                  <button
-                    onClick={() => deleteTask(task.id)}
-                    className="opacity-0 group-hover:opacity-100 text-muted-foreground hover:text-destructive transition-all"
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Completed Tasks */}
-      {completedTasks.length > 0 && (
+      {!isLoading && completedTasks.length > 0 && (
         <div className="space-y-2">
           <h3 className="text-sm font-medium text-muted-foreground flex items-center gap-2">
             <Check className="h-4 w-4 text-accent" />
@@ -355,7 +383,7 @@ export const TasksSection = ({ searchQuery }: TasksSectionProps) => {
                 className="flex items-center gap-3 p-3 bg-card/50 rounded-lg border border-border/30 group"
               >
                 <button
-                  onClick={() => toggleTask(task.id)}
+                  onClick={() => handleToggleTask(task)}
                   className="h-5 w-5 rounded-full bg-accent/20 border-2 border-accent flex items-center justify-center shrink-0"
                 >
                   <Check className="h-3 w-3 text-accent" />
@@ -366,7 +394,7 @@ export const TasksSection = ({ searchQuery }: TasksSectionProps) => {
                   </span>
                 </div>
                 <button
-                  onClick={() => deleteTask(task.id)}
+                  onClick={() => handleDeleteTask(task.id)}
                   className="opacity-0 group-hover:opacity-100 text-muted-foreground hover:text-destructive transition-all shrink-0"
                 >
                   <Trash2 className="h-4 w-4" />
@@ -376,6 +404,8 @@ export const TasksSection = ({ searchQuery }: TasksSectionProps) => {
           </div>
         </div>
       )}
+
+      <AuthModal open={authModalOpen} onOpenChange={setAuthModalOpen} />
     </div>
   );
 };
