@@ -10,6 +10,8 @@ const paths = [
   { name: "Statement of Findings", path: "/Portals/0/post_docs/Certification_Actions/Statement_of_Findings/" },
   { name: "Suspension Orders", path: "/Portals/0/post_docs/Certification_Actions/Suspension_Orders/" },
   { name: "Commission Meetings", path: "/Portals/0/post_docs/commissionmeetings/2025/xx.pdf" },
+  { name: "Regulation Notices", path: "/Portals/0/post_docs/regulationnotices/2026/XX.pdf" },
+  { name: "Bulletin", path: "/Portals/0/post_docs/bulletin/2026-xx.pdf" },
   { name: "POST Docs Root", path: "/Portals/0/post_docs/" },
   { name: "Documents Root", path: "/Portals/0/Documents/" },
   { name: "Images Root", path: "/Portals/0/Images/" },
