@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { Plus, Trash2, Check, Circle, ListTodo, CalendarIcon, Flag } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
+import { Plus, Trash2, Check, Circle, ListTodo, CalendarIcon, Flag, Pencil } from "lucide-react";
 import { format, isPast, isToday } from "date-fns";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -58,6 +58,9 @@ export const TasksSection = ({ searchQuery }: TasksSectionProps) => {
   const [newTask, setNewTask] = useState("");
   const [newPriority, setNewPriority] = useState<Priority>("medium");
   const [newDueDate, setNewDueDate] = useState<Date | undefined>();
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editText, setEditText] = useState("");
+  const editInputRef = useRef<HTMLInputElement>(null);
 
   // Load tasks from localStorage on mount
   useEffect(() => {
@@ -71,6 +74,14 @@ export const TasksSection = ({ searchQuery }: TasksSectionProps) => {
   useEffect(() => {
     localStorage.setItem("workflowhub-tasks", JSON.stringify(tasks));
   }, [tasks]);
+
+  // Focus edit input when editing starts
+  useEffect(() => {
+    if (editingId && editInputRef.current) {
+      editInputRef.current.focus();
+      editInputRef.current.select();
+    }
+  }, [editingId]);
 
   const addTask = () => {
     if (!newTask.trim()) return;
@@ -96,6 +107,36 @@ export const TasksSection = ({ searchQuery }: TasksSectionProps) => {
 
   const deleteTask = (id: string) => {
     setTasks(tasks.filter(t => t.id !== id));
+  };
+
+  const startEditing = (task: Task) => {
+    setEditingId(task.id);
+    setEditText(task.text);
+  };
+
+  const saveEdit = () => {
+    if (!editText.trim() || !editingId) {
+      setEditingId(null);
+      return;
+    }
+    setTasks(tasks.map(t => 
+      t.id === editingId ? { ...t, text: editText.trim() } : t
+    ));
+    setEditingId(null);
+    setEditText("");
+  };
+
+  const cancelEdit = () => {
+    setEditingId(null);
+    setEditText("");
+  };
+
+  const handleEditKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter") {
+      saveEdit();
+    } else if (e.key === "Escape") {
+      cancelEdit();
+    }
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -251,7 +292,25 @@ export const TasksSection = ({ searchQuery }: TasksSectionProps) => {
                   <span className="sr-only">Complete task</span>
                 </button>
                 <div className="flex-1 min-w-0">
-                  <span className="text-sm block">{task.text}</span>
+                  {editingId === task.id ? (
+                    <Input
+                      ref={editInputRef}
+                      value={editText}
+                      onChange={(e) => setEditText(e.target.value)}
+                      onKeyDown={handleEditKeyDown}
+                      onBlur={saveEdit}
+                      className="text-sm h-7 bg-background border-primary"
+                      maxLength={500}
+                    />
+                  ) : (
+                    <span 
+                      className="text-sm block cursor-pointer hover:text-primary transition-colors"
+                      onClick={() => startEditing(task)}
+                      title="Click to edit"
+                    >
+                      {task.text}
+                    </span>
+                  )}
                   <div className="flex items-center gap-2 mt-1">
                     <Badge variant="secondary" className={cn("text-xs px-1.5 py-0", priorityConfig[task.priority].badgeClass)}>
                       {priorityConfig[task.priority].label}
@@ -259,12 +318,23 @@ export const TasksSection = ({ searchQuery }: TasksSectionProps) => {
                     {getDueDateDisplay(task.dueDate)}
                   </div>
                 </div>
-                <button
-                  onClick={() => deleteTask(task.id)}
-                  className="opacity-0 group-hover:opacity-100 text-muted-foreground hover:text-destructive transition-all shrink-0"
-                >
-                  <Trash2 className="h-4 w-4" />
-                </button>
+                <div className="flex items-center gap-1 shrink-0">
+                  {editingId !== task.id && (
+                    <button
+                      onClick={() => startEditing(task)}
+                      className="opacity-0 group-hover:opacity-100 text-muted-foreground hover:text-primary transition-all p-1"
+                      title="Edit task"
+                    >
+                      <Pencil className="h-3.5 w-3.5" />
+                    </button>
+                  )}
+                  <button
+                    onClick={() => deleteTask(task.id)}
+                    className="opacity-0 group-hover:opacity-100 text-muted-foreground hover:text-destructive transition-all"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </button>
+                </div>
               </div>
             ))}
           </div>
