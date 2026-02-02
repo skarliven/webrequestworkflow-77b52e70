@@ -125,6 +125,153 @@ code: `<div class="accordion">
 </div>`,
   },
   {
+    name: "Monthly PMR Top Articles",
+    description: "Full 10-article section for Monthly PMR",
+    code: `<section class="top-articles">
+
+<article aria-labelledby="article-1-title">
+
+  <h3 id="article-1-title">Article Title 1</h3>
+
+  <figure data-src="/Portals/0/post_images/APRphotos/template-post.png" data-toggle="lightbox">
+
+    <img src="/Portals/0/post_images/APRphotos/template-post.png" alt="Placeholder image for article 1" loading="lazy">
+
+    <figcaption>Caption text for article 1 image</figcaption>
+
+  </figure>
+
+</article>
+
+<article aria-labelledby="article-2-title">
+
+  <h3 id="article-2-title">Article Title 2</h3>
+
+  <figure data-src="/Portals/0/post_images/APRphotos/template-post.png" data-toggle="lightbox">
+
+    <img src="/Portals/0/post_images/APRphotos/template-post.png" alt="Placeholder image for article 2" loading="lazy">
+
+    <figcaption>Caption text for article 2 image</figcaption>
+
+  </figure>
+
+</article>
+
+<article aria-labelledby="article-3-title">
+
+  <h3 id="article-3-title">Article Title 3</h3>
+
+  <figure data-src="/Portals/0/post_images/APRphotos/template-post.png" data-toggle="lightbox">
+
+    <img src="/Portals/0/post_images/APRphotos/template-post.png" alt="Placeholder image for article 3" loading="lazy">
+
+    <figcaption>Caption text for article 3 image</figcaption>
+
+  </figure>
+
+</article>
+
+<article aria-labelledby="article-4-title">
+
+  <h3 id="article-4-title">Article Title 4</h3>
+
+  <figure data-src="/Portals/0/post_images/APRphotos/template-post.png" data-toggle="lightbox">
+
+    <img src="/Portals/0/post_images/APRphotos/template-post.png" alt="Placeholder image for article 4" loading="lazy">
+
+    <figcaption>Caption text for article 4 image</figcaption>
+
+  </figure>
+
+</article>
+
+<article aria-labelledby="article-5-title">
+
+  <h3 id="article-5-title">Article Title 5</h3>
+
+  <figure data-src="/Portals/0/post_images/APRphotos/template-post.png" data-toggle="lightbox">
+
+    <img src="/Portals/0/post_images/APRphotos/template-post.png" alt="Placeholder image for article 5" loading="lazy">
+
+    <figcaption>Caption text for article 5 image</figcaption>
+
+  </figure>
+
+</article>
+
+<article aria-labelledby="article-6-title">
+
+  <h3 id="article-6-title">Article Title 6</h3>
+
+  <figure data-src="/Portals/0/post_images/APRphotos/template-post.png" data-toggle="lightbox">
+
+    <img src="/Portals/0/post_images/APRphotos/template-post.png" alt="Placeholder image for article 6" loading="lazy">
+
+    <figcaption>Caption text for article 6 image</figcaption>
+
+  </figure>
+
+</article>
+
+<article aria-labelledby="article-7-title">
+
+  <h3 id="article-7-title">Article Title 7</h3>
+
+  <figure data-src="/Portals/0/post_images/APRphotos/template-post.png" data-toggle="lightbox">
+
+    <img src="/Portals/0/post_images/APRphotos/template-post.png" alt="Placeholder image for article 7" loading="lazy">
+
+    <figcaption>Caption text for article 7 image</figcaption>
+
+  </figure>
+
+</article>
+
+<article aria-labelledby="article-8-title">
+
+  <h3 id="article-8-title">Article Title 8</h3>
+
+  <figure data-src="/Portals/0/post_images/APRphotos/template-post.png" data-toggle="lightbox">
+
+    <img src="/Portals/0/post_images/APRphotos/template-post.png" alt="Placeholder image for article 8" loading="lazy">
+
+    <figcaption>Caption text for article 8 image</figcaption>
+
+  </figure>
+
+</article>
+
+<article aria-labelledby="article-9-title">
+
+  <h3 id="article-9-title">Article Title 9</h3>
+
+  <figure data-src="/Portals/0/post_images/APRphotos/template-post.png" data-toggle="lightbox">
+
+    <img src="/Portals/0/post_images/APRphotos/template-post.png" alt="Placeholder image for article 9" loading="lazy">
+
+    <figcaption>Caption text for article 9 image</figcaption>
+
+  </figure>
+
+</article>
+
+<article aria-labelledby="article-10-title">
+
+  <h3 id="article-10-title">Article Title 10</h3>
+
+  <figure data-src="/Portals/0/post_images/APRphotos/template-post.png" data-toggle="lightbox">
+
+    <img src="/Portals/0/post_images/APRphotos/template-post.png" alt="Placeholder image for article 10" loading="lazy">
+
+    <figcaption>Caption text for article 10 image</figcaption>
+
+  </figure>
+
+</article>
+
+</section>`,
+  },
+  {
     name: "PMR Top Articles Section",
     description: "Multi-article layout with lightbox images",
     code: `<section class="top-articles">
