@@ -757,9 +757,6 @@ const TextFormatterSection = () => {
           </div>
         </TabsContent>
 
-        <TabsContent value="pdfnamer" className="space-y-4">
-          <PdfNamerTab />
-        </TabsContent>
       </Tabs>
     </div>
   );
