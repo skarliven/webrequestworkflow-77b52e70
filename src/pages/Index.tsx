@@ -31,8 +31,6 @@ const Index = () => {
         return <ModulesSection searchQuery={searchQuery} />;
       case "text":
         return <TextFormatterSection />;
-      case "tasks":
-        return <TasksSection searchQuery={searchQuery} />;
       default:
         return <CodeTemplatesSection searchQuery={searchQuery} />;
     }
