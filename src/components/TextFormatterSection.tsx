@@ -5,7 +5,7 @@ import { Copy, Download, Trash2, Type, Code, Wand2, Palette, Braces, Sparkles, E
 import { toast } from "sonner";
 import { SectionHeader } from "./SectionHeader";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import PdfNamerTab from "./PdfNamerTab";
+
 // Side-by-side comparison component
 const SideBySideView = ({ leftText, rightText, leftLabel, rightLabel }: { 
   leftText: string; 
@@ -589,10 +589,6 @@ const TextFormatterSection = () => {
             <Eraser className="h-4 w-4" />
             HTML Cleanup
           </TabsTrigger>
-          <TabsTrigger value="pdfnamer" className="flex items-center gap-1">
-            <FileText className="h-4 w-4" />
-            PDF Namer
-          </TabsTrigger>
         </TabsList>
 
         <TabsContent value="text" className="space-y-4">
@@ -757,9 +753,6 @@ const TextFormatterSection = () => {
           </div>
         </TabsContent>
 
-        <TabsContent value="pdfnamer" className="space-y-4">
-          <PdfNamerTab />
-        </TabsContent>
       </Tabs>
     </div>
   );
