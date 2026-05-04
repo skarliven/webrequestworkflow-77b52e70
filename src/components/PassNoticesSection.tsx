@@ -10,42 +10,6 @@ const passNotices = [
 
 <p>Course will be held January 15, 2026 in Long Beach, CA</p>`,
   },
-  {
-    name: "Conditional PASS Notice",
-    description: "Conditional approval template",
-    template: `CONDITIONAL PASS NOTICE
-
-Applicant Name: [Name]
-Application ID: [ID]
-Date: [Date]
-
-This notice confirms conditional approval pending completion of:
-- [ ] Background verification
-- [ ] Additional documentation
-- [ ] Training completion
-
-Deadline for completion: [Date]
-
-Contact: [Contact Info]`,
-  },
-  {
-    name: "PASS with Commendation",
-    description: "Distinction award template",
-    template: `PASS NOTICE - WITH DISTINCTION
-
-Applicant Name: [Name]
-Application ID: [ID]
-Date: [Date]
-
-Congratulations! The applicant has demonstrated exceptional performance and is hereby awarded certification WITH DISTINCTION.
-
-Score: [Score]
-Percentile: [Percentile]
-
-This achievement recognizes outstanding dedication and expertise.
-
-Authorized by: [Authority Name]`,
-  },
 ];
 
 interface PassNoticesSectionProps {
