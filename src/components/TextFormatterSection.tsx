@@ -5,7 +5,7 @@ import { Copy, Download, Trash2, Type, Code, Wand2, Palette, Braces, Sparkles, E
 import { toast } from "sonner";
 import { SectionHeader } from "./SectionHeader";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import PdfNamerTab from "./PdfNamerTab";
+
 // Side-by-side comparison component
 const SideBySideView = ({ leftText, rightText, leftLabel, rightLabel }: { 
   leftText: string; 
