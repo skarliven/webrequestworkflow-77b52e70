@@ -11,23 +11,6 @@ const passNotices = [
 <p>Course will be held January 15, 2026 in Long Beach, CA</p>`,
   },
   {
-    name: "Standard PASS Notice",
-    description: "Official notice template",
-    template: `PASS NOTICE
-
-Applicant Name: [Name]
-Application ID: [ID]
-Date: [Date]
-
-This notice confirms that the applicant has successfully passed all required examinations and meets the certification requirements.
-
-Certification Type: [Type]
-Effective Date: [Date]
-Expiration Date: [Date]
-
-Authorized by: [Authority Name]`,
-  },
-  {
     name: "Conditional PASS Notice",
     description: "Conditional approval template",
     template: `CONDITIONAL PASS NOTICE
