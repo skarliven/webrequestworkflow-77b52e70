@@ -8,7 +8,7 @@ import { EmailTemplatesSection } from "@/components/EmailTemplatesSection";
 import { PassNoticesSection } from "@/components/PassNoticesSection";
 import { ModulesSection } from "@/components/ModulesSection";
 import TextFormatterSection from "@/components/TextFormatterSection";
-import { TasksSection } from "@/components/TasksSection";
+
 import { SearchBar } from "@/components/SearchBar";
 
 const Index = () => {
@@ -31,8 +31,6 @@ const Index = () => {
         return <ModulesSection searchQuery={searchQuery} />;
       case "text":
         return <TextFormatterSection />;
-      case "tasks":
-        return <TasksSection searchQuery={searchQuery} />;
       default:
         return <CodeTemplatesSection searchQuery={searchQuery} />;
     }
