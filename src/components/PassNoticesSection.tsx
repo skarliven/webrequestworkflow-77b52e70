@@ -1,6 +1,7 @@
 import { CheckCircle } from "lucide-react";
 import { SectionHeader } from "./SectionHeader";
 import { TemplateCard } from "./TemplateCard";
+import { PassNoticeGenerator } from "./PassNoticeGenerator";
 
 const passNotices = [
   {
@@ -41,6 +42,7 @@ export const PassNoticesSection = ({ searchQuery = "" }: PassNoticesSectionProps
               description={notice.description}
             />
           ))}
+          <PassNoticeGenerator />
         </div>
       )}
     </section>
