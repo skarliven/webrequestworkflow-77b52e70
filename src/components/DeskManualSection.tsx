@@ -50,6 +50,45 @@ const DeskManualSection = () => {
         </p>
       </SectionCard>
 
+      {/* Routing Quick Guide */}
+      <SectionCard icon={FileSearch} title="Routing Quick Guide">
+        <p className="mb-2">
+          After visiting the{" "}
+          <a
+            href="https://post.ca.gov/contact-us"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-primary hover:underline"
+          >
+            Contact Us page
+          </a>
+          , use the recommendations below to route common requests:
+        </p>
+        <ul className="list-disc list-inside space-y-2">
+          <li>
+            <span className="text-foreground font-semibold">SBSLI network access request:</span> Copy the user's link, then in DNN click <span className="text-primary">Users</span>, add the email, and assign the user role (e.g., <code className="text-primary text-xs">SLI_576</code>).
+          </li>
+          <li>
+            <span className="text-foreground font-semibold">Name change or login access:</span> Send to the <span className="text-primary">EDI desk</span>.
+          </li>
+          <li>
+            <span className="text-foreground font-semibold">Microsoft Teams, printers, or computer issues:</span> Send to the <span className="text-primary">Help Desk</span>.
+          </li>
+          <li>
+            <span className="text-foreground font-semibold">Abroad Diplomas &amp; Background Waivers:</span> Send to Kelli Surawski —{" "}
+            <a href="mailto:kelli.surawski@post.ca.gov" className="text-primary hover:underline">
+              kelli.surawski@post.ca.gov
+            </a>
+          </li>
+          <li>
+            <span className="text-foreground font-semibold">POST 2-364 Psychological Suitability Declaration:</span> Send directly to Frances Melendez —{" "}
+            <a href="mailto:frances.melendez@post.ca.gov" className="text-primary hover:underline">
+              frances.melendez@post.ca.gov
+            </a>
+          </li>
+        </ul>
+      </SectionCard>
+
       {/* Daily Responsibilities */}
       <div>
         <h2 className="text-lg font-bold text-gradient-primary font-mono mb-4">II. Daily Responsibilities</h2>
