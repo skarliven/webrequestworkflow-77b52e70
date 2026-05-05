@@ -168,7 +168,12 @@ const DeskManualSection = () => {
         <p className="font-semibold text-foreground">Thursdays: Send Jobs Summary to Public Affairs</p>
         <ul className="list-disc list-inside space-y-1">
           <li>Export all job listings posted that week.</li>
-          <li>Use the Job Newsletter HTML Generator:
+          <li>
+            Under the Web Unit Module on{" "}
+            <a href="https://post.ca.gov/POST-Staff" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">post.ca.gov/POST-Staff</a>, use the{" "}
+            <a href="https://post.ca.gov/Job-Newsletter-HTML-Generator" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Job Newsletter HTML Generator</a>{" "}
+            (job listings are managed at{" "}
+            <a href="https://post.ca.gov/POST-Staff/Content-Management/Manage-Law-Enforcement-Jobs" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Manage Law Enforcement Jobs</a>):
             <ul className="list-disc list-inside ml-5 mt-1">
               <li>Type the number of job postings</li>
               <li>Click the Generate button</li>
