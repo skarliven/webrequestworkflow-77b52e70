@@ -41,6 +41,7 @@ export const PassNoticeGenerator = () => {
         <div>
           <h3 className="font-medium text-foreground text-sm">PASS Notice Generator</h3>
           <p className="text-xs text-muted-foreground">Fill in the fields to generate the HTML code</p>
+          <p className="text-xs text-muted-foreground mt-1">First save your file in <span className="font-mono text-primary/80">post_docs &gt; PASS_Notices</span> following the naming convention.</p>
           <p className="text-xs text-primary/80 font-mono mt-1">File naming convention: 202x-xx-xx_name-of-the-course</p>
         </div>
       </div>
