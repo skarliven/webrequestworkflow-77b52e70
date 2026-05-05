@@ -252,7 +252,16 @@ const DeskManualSection = () => {
                 <li>Once your slide is created from the PowerPoint template, submit it via Microsoft Teams: go to <strong>POST Knowledge Library → Templates and Logos channel → Lobby Slides</strong> tab at the top.</li>
                 <li>On the <strong>Lobby Display Submissions</strong> screen, click <strong>New</strong>, choose the slide <strong>Type</strong> (e.g., New Employee), add a comment, attach your template file, and set the <strong>Go Live</strong> and <strong>Expire</strong> dates.</li>
                 <li>Slides are routed through the Web Team for final approval and publishing.</li>
-                <li>Post to the lobby system using Mvix.</li>
+                <li>
+                  Post to the lobby system using Mvix at{" "}
+                  <a href="https://cms.mvix.com/sign-in" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">https://cms.mvix.com/sign-in</a>:
+                  <ul className="list-[circle] list-inside ml-6 mt-1 space-y-1">
+                    <li>Click <strong>Media → Add Media</strong>, set <strong>File Type</strong> to <em>Microsoft Office</em>, and upload the file.</li>
+                    <li>Add <strong>Validity</strong> with an <strong>Activate Date</strong> and <strong>Expiration Date</strong> (usually 2 weeks out).</li>
+                    <li>Go to <strong>Devices</strong>, find <strong>Internal (new)</strong>, click the <strong>3 dots</strong> on the right, and select <strong>Schedules</strong>.</li>
+                    <li>Click <strong>Edit</strong>, drag in the file you just added, then <strong>preview</strong> and <strong>save</strong> the schedule.</li>
+                  </ul>
+                </li>
                 <li>Use templates located in <code className="text-primary text-xs">Web Design Doc Team / Lobby Display</code> documentation.</li>
               </ul>
             </AccordionContent>
