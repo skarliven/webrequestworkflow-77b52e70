@@ -27,12 +27,9 @@ export const PassNoticeGenerator = () => {
     const link = linkText.trim() || "Lorem text";
     const date = courseDate.trim() || "Month xx, 2026";
     const loc = location.trim() || "XXxxx, CA";
-    const expLine = expirationDate
-      ? `\n\n<!-- Expiration Date: ${format(expirationDate, "MM/dd/yyyy")} -->`
-      : "";
     return `<h2><a href="https://post.ca.gov/Portals/0/post_docs/PASS_Notices/${cleanPdf}" target="_blank">${link}</a></h2>
 
-<p>Course will be held ${date} in ${loc}</p>${expLine}`;
+<p>Course will be held ${date} in ${loc}</p>`;
   }, [cleanPdf, linkText, courseDate, location, expirationDate]);
 
   return (
