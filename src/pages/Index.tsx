@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Terminal } from "lucide-react";
 import { NavTabs } from "@/components/NavTabs";
 import { CodeTemplatesSection } from "@/components/CodeTemplatesSection";
@@ -15,6 +15,15 @@ import { SearchBar } from "@/components/SearchBar";
 const Index = () => {
   const [activeTab, setActiveTab] = useState("code");
   const [searchQuery, setSearchQuery] = useState("");
+
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const detail = (e as CustomEvent).detail;
+      if (typeof detail === "string") setActiveTab(detail);
+    };
+    window.addEventListener("workflowhub:set-tab", handler);
+    return () => window.removeEventListener("workflowhub:set-tab", handler);
+  }, []);
 
   const renderContent = () => {
     switch (activeTab) {
