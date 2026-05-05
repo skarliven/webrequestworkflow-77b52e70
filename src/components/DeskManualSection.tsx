@@ -249,6 +249,9 @@ const DeskManualSection = () => {
               <p>Design slides for: New employees, Service Awards, POST Events, Job Opportunities.</p>
               <ul className="list-disc list-inside space-y-1">
                 <li>Use PowerPoint to create and format slides.</li>
+                <li>Once your slide is created from the PowerPoint template, submit it via Microsoft Teams: go to <strong>POST Knowledge Library → Templates and Logos channel → Lobby Slides</strong> tab at the top.</li>
+                <li>On the <strong>Lobby Display Submissions</strong> screen, click <strong>New</strong>, choose the slide <strong>Type</strong> (e.g., New Employee), add a comment, attach your template file, and set the <strong>Go Live</strong> and <strong>Expire</strong> dates.</li>
+                <li>Slides are routed through the Web Team for final approval and publishing.</li>
                 <li>Post to the lobby system using Mvix.</li>
                 <li>Use templates located in <code className="text-primary text-xs">Web Design Doc Team / Lobby Display</code> documentation.</li>
               </ul>
