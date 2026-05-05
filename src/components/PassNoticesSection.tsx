@@ -5,10 +5,10 @@ import { TemplateCard } from "./TemplateCard";
 const passNotices = [
   {
     name: "PASS Course Notice",
-    description: "Course announcement with PDF link",
-    template: `<h2><a href="https://post.ca.gov/Portals/0/post_docs/PASS_Notices/xx.pdf" target="_blank">Lorem text</a></h2>
+    description: "Course announcement with PDF link. Filename convention: 2026-04-10_Post-Evaluators.pdf",
+    template: `<h2><a href="https://post.ca.gov/Portals/0/post_docs/PASS_Notices/year-month-day_xx.pdf" target="_blank">Lorem text</a></h2>
 
-<p>Course will be held January 15, 2026 in Long Beach, CA</p>`,
+<p>Course will be held Month xx, 2026 in XXxxx, CA</p>`,
   },
 ];
 
