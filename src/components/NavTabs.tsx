@@ -6,6 +6,7 @@ interface NavTabsProps {
 }
 
 const tabs = [
+  { id: "manual", label: "Manual", icon: BookOpen },
   { id: "code", label: "Code", icon: Code2 },
   { id: "icons", label: "Icons", icon: Sparkles },
   { id: "paths", label: "Paths", icon: FolderOpen },
@@ -13,7 +14,6 @@ const tabs = [
   { id: "pass", label: "PASS", icon: CheckCircle },
   { id: "modules", label: "Modules", icon: LayoutGrid },
   { id: "text", label: "Text", icon: Type },
-  { id: "manual", label: "Manual", icon: BookOpen },
 ];
 
 export const NavTabs = ({ activeTab, onTabChange }: NavTabsProps) => {
