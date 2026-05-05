@@ -59,7 +59,18 @@ const DeskManualSection = () => {
               <li>Check the WebRequests@post.ca.gov inbox throughout the day.</li>
               <li>Route requests to the appropriate bureau based on the content.</li>
               <li>Follow up if the request lacks clarity.</li>
-              <li>Refer to the Contact Us page to determine correct routing.</li>
+              <li>
+                Refer to the{" "}
+                <a
+                  href="https://post.ca.gov/contact-us"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-primary hover:underline"
+                >
+                  Contact Us page
+                </a>{" "}
+                to determine correct routing.
+              </li>
             </ul>
           </SectionCard>
 
