@@ -1,6 +1,7 @@
 import { BookOpen, Mail, FileCheck, Briefcase, Bell, Heart, FileText, Calendar, Wrench, GraduationCap, FormInput, Monitor, FileSearch, Users, Lightbulb } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import passNoticesReference from "@/assets/pass-notices-reference.png";
 
 const SectionCard = ({ icon: Icon, title, children }: { icon: any; title: string; children: React.ReactNode }) => (
   <Card className="p-6 bg-card/50 border-border/50 hover:border-primary/30 transition-colors">
@@ -137,9 +138,37 @@ const DeskManualSection = () => {
 
           <SectionCard icon={Bell} title="4. PASS Notices for Regions">
             <p>
-              When Katie from Public Affairs reaches out, she will provide PDFs to be saved in the
-              <code className="text-primary text-xs mx-1">PASS_notices</code> folder following naming conventions.
+              When Katie from Public Affairs reaches out, she will provide PDFs to be saved in the{" "}
+              <button
+                type="button"
+                onClick={() =>
+                  window.dispatchEvent(new CustomEvent("workflowhub:set-tab", { detail: "pass" }))
+                }
+                className="text-primary hover:underline font-mono text-xs"
+              >
+                PASS_notices
+              </button>{" "}
+              folder following naming conventions.
             </p>
+            <p className="mt-3 font-semibold text-foreground">Posting steps in POSTPASS:</p>
+            <ol className="list-decimal list-inside space-y-1">
+              <li><span className="text-foreground">Notice Type:</span> Default</li>
+              <li><span className="text-foreground">Priority:</span> Default</li>
+              <li><span className="text-foreground">Sites:</span> POST Website</li>
+              <li><span className="text-foreground">Notification Group:</span> select the relevant region (e.g., Region 9 Self Enlist + Region 9 Auto Enlist)</li>
+              <li><span className="text-foreground">Message:</span> paste the HTML code (see PASS tab for the template) and update the course date/location</li>
+              <li><span className="text-foreground">Effective Date:</span> today &nbsp;|&nbsp; <span className="text-foreground">Expiration Date:</span> course end date (or as instructed)</li>
+              <li>Click <span className="text-primary font-semibold">Save</span></li>
+            </ol>
+            <div className="mt-3 rounded-lg border border-border/50 overflow-hidden bg-muted/20">
+              <img
+                src={passNoticesReference}
+                alt="POSTPASS notice form reference showing Notice Type, Priority, Sites, Notification Group, Message HTML, Effective and Expiration Date fields"
+                className="w-full h-auto"
+                loading="lazy"
+              />
+              <p className="text-[10px] text-muted-foreground px-2 py-1 font-mono">Reference: POSTPASS notice form</p>
+            </div>
           </SectionCard>
 
           <SectionCard icon={Heart} title="5. Update In Memoriam Page">
