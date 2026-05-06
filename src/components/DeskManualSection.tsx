@@ -10,7 +10,7 @@ const SectionCard = ({ icon: Icon, title, children, searchQuery = "" }: { icon: 
   useEffect(() => {
     const q = searchQuery.trim().toLowerCase();
     if (!q) { setHidden(false); return; }
-    const text = (ref.current?.innerText || "").toLowerCase();
+    const text = (ref.current?.textContent || "").toLowerCase();
     setHidden(!text.includes(q));
   }, [searchQuery]);
   return (
