@@ -359,6 +359,18 @@ const DeskManualSection = ({ searchQuery = "" }: DeskManualSectionProps) => {
               </ul>
             </AccordionContent>
           </AccordionItem>
+
+          <AccordionItem value="new-employee" className="border border-border/50 rounded-lg px-4 bg-card/50">
+            <AccordionTrigger className="hover:no-underline">
+              <div className="flex items-center gap-3">
+                <Users className="h-4 w-4 text-primary" />
+                <span className="font-mono">5. New Employee Process</span>
+              </div>
+            </AccordionTrigger>
+            <AccordionContent className="text-sm text-muted-foreground space-y-2">
+              <p>Vijaya will send an email with the subject: <span className="text-foreground font-semibold">NE employee</span>. You have to accept the invitation to add it to your calendar. All you have to do is add the new employee to <span className="text-foreground font-semibold">PKL</span> and <span className="text-foreground font-semibold">Data Warehouse Team Sites</span>.</p>
+            </AccordionContent>
+          </AccordionItem>
         </Accordion>
       </div>
 
