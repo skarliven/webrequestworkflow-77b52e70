@@ -113,6 +113,7 @@ const DeskManualSection = ({ searchQuery = "" }: DeskManualSectionProps) => {
             <a href="mailto:proctorrequest@post.ca.gov" className="text-primary hover:underline">
               proctorrequest@post.ca.gov
             </a>
+          </li>
           <li>
             <span className="text-foreground font-semibold">Examination Development:</span> Send to{" "}
             <a href="mailto:exam.research@post.ca.gov" className="text-primary hover:underline">
