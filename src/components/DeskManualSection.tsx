@@ -4,15 +4,15 @@ import { Card } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import passNoticesReference from "@/assets/pass-notices-reference.png";
 
-const SectionCard = ({ icon: Icon, title, children, searchQuery = "" }: { icon: any; title: string; children: React.ReactNode; searchQuery?: string }) => {
+const SectionCard = ({ icon: Icon, title, children, searchQuery = "", keywords = "" }: { icon: any; title: string; children: React.ReactNode; searchQuery?: string; keywords?: string }) => {
   const ref = useRef<HTMLDivElement>(null);
   const [hidden, setHidden] = useState(false);
   useEffect(() => {
     const q = searchQuery.trim().toLowerCase();
     if (!q) { setHidden(false); return; }
-    const text = (ref.current?.innerText || "").toLowerCase();
+    const text = ((ref.current?.textContent || "") + " " + keywords).toLowerCase();
     setHidden(!text.includes(q));
-  }, [searchQuery]);
+  }, [searchQuery, keywords]);
   return (
     <Card ref={ref} className={`p-6 bg-card/50 border-border/50 hover:border-primary/30 transition-colors ${hidden ? "hidden" : ""}`}>
       <div className="flex items-center gap-3 mb-4">
@@ -287,7 +287,7 @@ const DeskManualSection = ({ searchQuery = "" }: DeskManualSectionProps) => {
       <div>
         <h2 className="text-lg font-bold text-gradient-primary font-mono mb-4">II. Daily Responsibilities</h2>
         <div className="grid gap-4 md:grid-cols-2">
-          <SectionCard icon={Mail} title="1. Monitor WebRequests Inbox" searchQuery={searchQuery}>
+          <SectionCard icon={Mail} title="1. Monitor WebRequests Inbox" searchQuery={searchQuery} keywords="webrequest web request inbox email routing">
             <ul className="list-disc list-inside space-y-1">
               <li>Check the WebRequests@post.ca.gov inbox throughout the day.</li>
               <li>Route requests to the appropriate bureau based on the content.</li>
@@ -320,7 +320,7 @@ const DeskManualSection = ({ searchQuery = "" }: DeskManualSectionProps) => {
             </ul>
           </SectionCard>
 
-          <SectionCard icon={Briefcase} title="3. Handle Law Enforcement Job Postings" searchQuery={searchQuery}>
+          <SectionCard icon={Briefcase} title="3. Handle Law Enforcement Job Postings" searchQuery={searchQuery} keywords="law enforcement LE jobs POST jobs job postings newsletter public affairs">
             <ul className="list-disc list-inside space-y-1">
               <li>Format job submissions as needed.</li>
               <li>Post jobs under the Law Enforcement Jobs section.</li>
@@ -347,7 +347,7 @@ const DeskManualSection = ({ searchQuery = "" }: DeskManualSectionProps) => {
             </ul>
           </SectionCard>
 
-          <SectionCard icon={Bell} title="4. PASS Notices for Regions" searchQuery={searchQuery}>
+          <SectionCard icon={Bell} title="4. PASS Notices for Regions" searchQuery={searchQuery} keywords="PASS notices POSTPASS regions notification">
             <p>
               When Katie from Public Affairs reaches out, she will provide PDFs to be saved in the{" "}
               <button
@@ -382,7 +382,7 @@ const DeskManualSection = ({ searchQuery = "" }: DeskManualSectionProps) => {
             </div>
           </SectionCard>
 
-          <SectionCard icon={Heart} title="5. Update In Memoriam Page" searchQuery={searchQuery}>
+          <SectionCard icon={Heart} title="5. Update In Memoriam Page" searchQuery={searchQuery} keywords="in memoriam memorian fallen officers">
             <p>Add new fallen officers when notified. To update:</p>
             <ul className="list-disc list-inside space-y-1">
               <li>Go to shared folder <code className="text-primary text-xs">post_docs/inmemoriam</code></li>
@@ -393,7 +393,7 @@ const DeskManualSection = ({ searchQuery = "" }: DeskManualSectionProps) => {
             </ul>
           </SectionCard>
 
-          <SectionCard icon={FileText} title="6. Bulletin & Regulation Naming" searchQuery={searchQuery}>
+          <SectionCard icon={FileText} title="6. Bulletin & Regulation Naming" searchQuery={searchQuery} keywords="bulletin bulletins regulation naming PDF ADA">
             <ul className="list-disc list-inside space-y-1">
               <li>Save new bulletins and regulation notices to the server using the designated naming structure.</li>
               <li>Reference the Bulletins page for the latest versions.</li>
