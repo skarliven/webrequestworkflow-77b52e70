@@ -160,6 +160,24 @@ const DeskManualSection = ({ searchQuery = "" }: DeskManualSectionProps) => {
               <li>Post jobs under the Law Enforcement Jobs section.</li>
               <li>Add submission dates and contact details if missing.</li>
               <li>Remove expired job postings. Some jobs are continuous and should remain posted.</li>
+              <li>Export all job listings posted that week.</li>
+              <li>
+                Under the Web Unit Module on{" "}
+                <a href="https://post.ca.gov/POST-Staff" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">post.ca.gov/POST-Staff</a>, use the{" "}
+                <a href="https://post.ca.gov/Job-Newsletter-HTML-Generator" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Job Newsletter HTML Generator</a>{" "}
+                (job listings are managed at{" "}
+                <a href="https://post.ca.gov/POST-Staff/Content-Management/Manage-Law-Enforcement-Jobs" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Manage Law Enforcement Jobs</a>):
+                <ul className="list-disc list-inside ml-5 mt-1">
+                  <li>Type the number of job postings</li>
+                  <li>Click the Generate button</li>
+                </ul>
+              </li>
+              <li>
+                Send to Public Affairs in both Plain Text format (email body) and HTML format (attachment or formatted email) to{" "}
+                <a href="mailto:katie.strickland@post.ca.gov" className="text-primary hover:underline">katie.strickland@post.ca.gov</a>{" "}and{" "}
+                <a href="mailto:publicaffairs@post.ca.gov" className="text-primary hover:underline">publicaffairs@post.ca.gov</a>.
+              </li>
+              <li>Confirm receipt.</li>
             </ul>
           </SectionCard>
 
