@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { BookOpen, Mail, FileCheck, Briefcase, Bell, Heart, FileText, Calendar, Wrench, GraduationCap, FormInput, Monitor, FileSearch, Users, Lightbulb } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
@@ -164,7 +164,7 @@ const AsNeededTasks = ({ searchQuery }: { searchQuery: string }) => {
                 </div>
               </AccordionTrigger>
               <AccordionContent className="text-sm text-muted-foreground space-y-2">
-                <div ref={(el) => (refs.current[item.value] = el)}>{item.content}</div>
+                <div>{item.content}</div>
               </AccordionContent>
             </AccordionItem>
           );
