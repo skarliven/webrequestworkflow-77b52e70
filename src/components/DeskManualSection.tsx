@@ -119,25 +119,28 @@ const asNeededItems: { value: string; icon: any; title: string; content: React.R
   },
 ];
 
+const reactNodeToText = (node: React.ReactNode): string => {
+  if (node == null || typeof node === "boolean") return "";
+  if (typeof node === "string" || typeof node === "number") return String(node);
+  if (Array.isArray(node)) return node.map(reactNodeToText).join(" ");
+  if (React.isValidElement(node)) return reactNodeToText((node.props as any).children);
+  return "";
+};
+
 const AsNeededTasks = ({ searchQuery }: { searchQuery: string }) => {
-  const refs = useRef<Record<string, HTMLDivElement | null>>({});
-  const [matches, setMatches] = useState<string[]>(asNeededItems.map((i) => i.value));
   const [openItems, setOpenItems] = useState<string[]>([]);
 
+  const q = searchQuery.trim().toLowerCase();
+  const matches = q
+    ? asNeededItems.filter((i) =>
+        (i.title + " " + reactNodeToText(i.content)).toLowerCase().includes(q)
+      ).map((i) => i.value)
+    : asNeededItems.map((i) => i.value);
+
   useEffect(() => {
-    const q = searchQuery.trim().toLowerCase();
-    if (!q) {
-      setMatches(asNeededItems.map((i) => i.value));
-      setOpenItems([]);
-      return;
-    }
-    const found = asNeededItems.filter((i) => {
-      const text = (refs.current[i.value]?.innerText || i.title).toLowerCase();
-      return text.includes(q);
-    }).map((i) => i.value);
-    setMatches(found);
-    setOpenItems(found);
-  }, [searchQuery]);
+    setOpenItems(q ? matches : []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [q]);
 
   if (searchQuery.trim() && matches.length === 0) return null;
 
