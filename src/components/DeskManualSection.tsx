@@ -114,6 +114,24 @@ const DeskManualSection = ({ searchQuery = "" }: DeskManualSectionProps) => {
               proctorrequest@post.ca.gov
             </a>
           </li>
+          <li>
+            <span className="text-foreground font-semibold">Examination Development:</span> Send to{" "}
+            <a href="mailto:exam.research@post.ca.gov" className="text-primary hover:underline">
+              exam.research@post.ca.gov
+            </a>
+          </li>
+          <li>
+            <span className="text-foreground font-semibold">Medical Examination:</span> Send to Kelli Surawski —{" "}
+            <a href="mailto:kelli.surawski@post.ca.gov" className="text-primary hover:underline">
+              kelli.surawski@post.ca.gov
+            </a>
+          </li>
+          <li>
+            <span className="text-foreground font-semibold">Academy Comparisons:</span> Send to Michael Marshall —{" "}
+            <a href="mailto:michael.marshall@post.ca.gov" className="text-primary hover:underline">
+              michael.marshall@post.ca.gov
+            </a>
+          </li>
         </ul>
       </SectionCard>
 
