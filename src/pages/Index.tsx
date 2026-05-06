@@ -42,7 +42,7 @@ const Index = () => {
       case "text":
         return <TextFormatterSection />;
       case "manual":
-        return <DeskManualSection />;
+        return <DeskManualSection searchQuery={searchQuery} />;
       default:
         return <CodeTemplatesSection searchQuery={searchQuery} />;
     }
