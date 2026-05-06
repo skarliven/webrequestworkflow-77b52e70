@@ -87,6 +87,18 @@ const DeskManualSection = () => {
               frances.melendez@post.ca.gov
             </a>
           </li>
+          <li>
+            <span className="text-foreground font-semibold">PELLETB requests, questions, or inquiries:</span> Contact our proctor request team at{" "}
+            <a href="mailto:proctorrequest@post.ca.gov" className="text-primary hover:underline">
+              proctorrequest@post.ca.gov
+            </a>
+          </li>
+          <li>
+            <span className="text-foreground font-semibold">Dispatcher Proctor Training requests, questions, or inquiries:</span> Contact our proctor request team at{" "}
+            <a href="mailto:proctorrequest@post.ca.gov" className="text-primary hover:underline">
+              proctorrequest@post.ca.gov
+            </a>
+          </li>
         </ul>
       </SectionCard>
 
