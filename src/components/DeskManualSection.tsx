@@ -1,21 +1,36 @@
+import { useEffect, useRef } from "react";
 import { BookOpen, Mail, FileCheck, Briefcase, Bell, Heart, FileText, Calendar, Wrench, GraduationCap, FormInput, Monitor, FileSearch, Users, Lightbulb } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import passNoticesReference from "@/assets/pass-notices-reference.png";
 
-const SectionCard = ({ icon: Icon, title, children }: { icon: any; title: string; children: React.ReactNode }) => (
-  <Card className="p-6 bg-card/50 border-border/50 hover:border-primary/30 transition-colors">
-    <div className="flex items-center gap-3 mb-4">
-      <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center border border-primary/20">
-        <Icon className="h-5 w-5 text-primary" />
+const SectionCard = ({ icon: Icon, title, children, searchQuery = "" }: { icon: any; title: string; children: React.ReactNode; searchQuery?: string }) => {
+  const ref = useRef<HTMLDivElement>(null);
+  const [hidden, setHidden] = useState(false);
+  useEffect(() => {
+    const q = searchQuery.trim().toLowerCase();
+    if (!q) { setHidden(false); return; }
+    const text = (ref.current?.innerText || "").toLowerCase();
+    setHidden(!text.includes(q));
+  }, [searchQuery]);
+  return (
+    <Card ref={ref} className={`p-6 bg-card/50 border-border/50 hover:border-primary/30 transition-colors ${hidden ? "hidden" : ""}`}>
+      <div className="flex items-center gap-3 mb-4">
+        <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center border border-primary/20">
+          <Icon className="h-5 w-5 text-primary" />
+        </div>
+        <h3 className="text-lg font-semibold text-foreground font-mono">{title}</h3>
       </div>
-      <h3 className="text-lg font-semibold text-foreground font-mono">{title}</h3>
-    </div>
-    <div className="text-sm text-muted-foreground space-y-2 leading-relaxed">{children}</div>
-  </Card>
-);
+      <div className="text-sm text-muted-foreground space-y-2 leading-relaxed">{children}</div>
+    </Card>
+  );
+};
 
-const DeskManualSection = () => {
+interface DeskManualSectionProps {
+  searchQuery?: string;
+}
+
+const DeskManualSection = ({ searchQuery = "" }: DeskManualSectionProps) => {
   return (
     <div className="space-y-6">
       {/* Header */}
