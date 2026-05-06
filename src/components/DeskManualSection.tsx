@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { BookOpen, Mail, FileCheck, Briefcase, Bell, Heart, FileText, Calendar, Wrench, GraduationCap, FormInput, Monitor, FileSearch, Users, Lightbulb } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
