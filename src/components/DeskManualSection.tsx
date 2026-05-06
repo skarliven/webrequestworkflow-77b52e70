@@ -56,7 +56,7 @@ const DeskManualSection = ({ searchQuery = "" }: DeskManualSectionProps) => {
       </Card>
 
       {/* Overview */}
-      <SectionCard icon={Lightbulb} title="I. Overview of Role">
+      <SectionCard icon={Lightbulb} title="I. Overview of Role" searchQuery={searchQuery}>
         <p>
           As the Website Administrator, I oversee and manage web-related requests, ensure accessibility compliance,
           update job postings, maintain website content, support internal communications (lobby slides), and
@@ -67,7 +67,7 @@ const DeskManualSection = ({ searchQuery = "" }: DeskManualSectionProps) => {
       </SectionCard>
 
       {/* Routing Quick Guide */}
-      <SectionCard icon={FileSearch} title="Routing Quick Guide">
+      <SectionCard icon={FileSearch} title="Routing Quick Guide" searchQuery={searchQuery}>
         <p className="mb-2">
           After visiting the{" "}
           <a
@@ -121,7 +121,7 @@ const DeskManualSection = ({ searchQuery = "" }: DeskManualSectionProps) => {
       <div>
         <h2 className="text-lg font-bold text-gradient-primary font-mono mb-4">II. Daily Responsibilities</h2>
         <div className="grid gap-4 md:grid-cols-2">
-          <SectionCard icon={Mail} title="1. Monitor WebRequests Inbox">
+          <SectionCard icon={Mail} title="1. Monitor WebRequests Inbox" searchQuery={searchQuery}>
             <ul className="list-disc list-inside space-y-1">
               <li>Check the WebRequests@post.ca.gov inbox throughout the day.</li>
               <li>Route requests to the appropriate bureau based on the content.</li>
@@ -141,7 +141,7 @@ const DeskManualSection = ({ searchQuery = "" }: DeskManualSectionProps) => {
             </ul>
           </SectionCard>
 
-          <SectionCard icon={FileCheck} title="2. Approve Web Content Submissions">
+          <SectionCard icon={FileCheck} title="2. Approve Web Content Submissions" searchQuery={searchQuery}>
             <p>Review incoming content for:</p>
             <ul className="list-disc list-inside space-y-1">
               <li>Correct and updated information</li>
@@ -154,7 +154,7 @@ const DeskManualSection = ({ searchQuery = "" }: DeskManualSectionProps) => {
             </ul>
           </SectionCard>
 
-          <SectionCard icon={Briefcase} title="3. Handle Law Enforcement Job Postings">
+          <SectionCard icon={Briefcase} title="3. Handle Law Enforcement Job Postings" searchQuery={searchQuery}>
             <ul className="list-disc list-inside space-y-1">
               <li>Format job submissions as needed.</li>
               <li>Post jobs under the Law Enforcement Jobs section.</li>
@@ -163,7 +163,7 @@ const DeskManualSection = ({ searchQuery = "" }: DeskManualSectionProps) => {
             </ul>
           </SectionCard>
 
-          <SectionCard icon={Bell} title="4. PASS Notices for Regions">
+          <SectionCard icon={Bell} title="4. PASS Notices for Regions" searchQuery={searchQuery}>
             <p>
               When Katie from Public Affairs reaches out, she will provide PDFs to be saved in the{" "}
               <button
@@ -198,7 +198,7 @@ const DeskManualSection = ({ searchQuery = "" }: DeskManualSectionProps) => {
             </div>
           </SectionCard>
 
-          <SectionCard icon={Heart} title="5. Update In Memoriam Page">
+          <SectionCard icon={Heart} title="5. Update In Memoriam Page" searchQuery={searchQuery}>
             <p>Add new fallen officers when notified. To update:</p>
             <ul className="list-disc list-inside space-y-1">
               <li>Go to shared folder <code className="text-primary text-xs">post_docs/inmemoriam</code></li>
@@ -209,7 +209,7 @@ const DeskManualSection = ({ searchQuery = "" }: DeskManualSectionProps) => {
             </ul>
           </SectionCard>
 
-          <SectionCard icon={FileText} title="6. Bulletin & Regulation Naming">
+          <SectionCard icon={FileText} title="6. Bulletin & Regulation Naming" searchQuery={searchQuery}>
             <ul className="list-disc list-inside space-y-1">
               <li>Save new bulletins and regulation notices to the server using the designated naming structure.</li>
               <li>Reference the Bulletins page for the latest versions.</li>
@@ -220,7 +220,7 @@ const DeskManualSection = ({ searchQuery = "" }: DeskManualSectionProps) => {
       </div>
 
       {/* Weekly */}
-      <SectionCard icon={Calendar} title="III. Weekly Responsibilities">
+      <SectionCard icon={Calendar} title="III. Weekly Responsibilities" searchQuery={searchQuery}>
         <p className="font-semibold text-foreground">Thursdays: Send Jobs Summary to Public Affairs</p>
         <ul className="list-disc list-inside space-y-1">
           <li>Export all job listings posted that week.</li>
@@ -343,7 +343,7 @@ const DeskManualSection = ({ searchQuery = "" }: DeskManualSectionProps) => {
       </div>
 
       {/* Tools */}
-      <SectionCard icon={Wrench} title="V. Tools & Systems Used">
+      <SectionCard icon={Wrench} title="V. Tools & Systems Used" searchQuery={searchQuery}>
         <div className="grid sm:grid-cols-2 gap-x-6 gap-y-1.5">
           {[
             ["Website Platform", "Evoq DNN"],
@@ -365,7 +365,7 @@ const DeskManualSection = ({ searchQuery = "" }: DeskManualSectionProps) => {
       </SectionCard>
 
       {/* Contacts */}
-      <SectionCard icon={Users} title="VI. Support Contacts">
+      <SectionCard icon={Users} title="VI. Support Contacts" searchQuery={searchQuery}>
         <div className="grid sm:grid-cols-2 gap-3">
           <div className="p-3 rounded-lg bg-muted/30 border border-border/30">
             <div className="font-semibold text-foreground">Nic Barrios</div>
@@ -381,7 +381,7 @@ const DeskManualSection = ({ searchQuery = "" }: DeskManualSectionProps) => {
       </SectionCard>
 
       {/* Notes & Tips */}
-      <SectionCard icon={Lightbulb} title="VII. Notes & Tips">
+      <SectionCard icon={Lightbulb} title="VII. Notes & Tips" searchQuery={searchQuery}>
         <ul className="list-disc list-inside space-y-1">
           <li>Keep a clean inbox for WebRequests with folders by bureau.</li>
           <li>Keep POST notices folder updated.</li>
