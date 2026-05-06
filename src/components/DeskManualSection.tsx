@@ -4,15 +4,15 @@ import { Card } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import passNoticesReference from "@/assets/pass-notices-reference.png";
 
-const SectionCard = ({ icon: Icon, title, children, searchQuery = "" }: { icon: any; title: string; children: React.ReactNode; searchQuery?: string }) => {
+const SectionCard = ({ icon: Icon, title, children, searchQuery = "", keywords = "" }: { icon: any; title: string; children: React.ReactNode; searchQuery?: string; keywords?: string }) => {
   const ref = useRef<HTMLDivElement>(null);
   const [hidden, setHidden] = useState(false);
   useEffect(() => {
     const q = searchQuery.trim().toLowerCase();
     if (!q) { setHidden(false); return; }
-    const text = (ref.current?.textContent || "").toLowerCase();
+    const text = ((ref.current?.textContent || "") + " " + keywords).toLowerCase();
     setHidden(!text.includes(q));
-  }, [searchQuery]);
+  }, [searchQuery, keywords]);
   return (
     <Card ref={ref} className={`p-6 bg-card/50 border-border/50 hover:border-primary/30 transition-colors ${hidden ? "hidden" : ""}`}>
       <div className="flex items-center gap-3 mb-4">
