@@ -26,6 +26,151 @@ const SectionCard = ({ icon: Icon, title, children, searchQuery = "" }: { icon: 
   );
 };
 
+const asNeededItems: { value: string; icon: any; title: string; content: React.ReactNode }[] = [
+  {
+    value: "icons",
+    icon: Wrench,
+    title: "Fixing Missing Icons on Right Side Navigation",
+    content: (
+      <>
+        <p>When users edit pages — especially the right side navigation bar — icons often go missing. Correct these during content approval.</p>
+        <ul className="list-disc list-inside space-y-1">
+          <li>Open the page using the Advanced Editor and click on Source Code to view the HTML.</li>
+          <li>Restore missing icon HTML snippets manually.</li>
+        </ul>
+      </>
+    ),
+  },
+  {
+    value: "sbsli",
+    icon: GraduationCap,
+    title: "1. SBSLI Class Management",
+    content: (
+      <ul className="list-disc list-inside space-y-1">
+        <li>Create new classes using the DMX module on the POST Website based on the upcoming class schedule.</li>
+        <li>Grant access to SBSLI participants.</li>
+        <li>Use the provided Excel spreadsheet to maintain and track class schedules.</li>
+        <li>Add link to SLI schedule saved in Teams for all staff to reference.</li>
+      </ul>
+    ),
+  },
+  {
+    value: "forms",
+    icon: FormInput,
+    title: "2. Create Live Forms",
+    content: (
+      <ul className="list-disc list-inside space-y-1">
+        <li>Use the internal form builder tool to develop and publish forms.</li>
+        <li>Ensure proper field validation and mobile responsiveness.</li>
+        <li>Have Sam add the CAPTCHA key to each new one.</li>
+        <li>Page permissions should be "registered users" for all pages with a Live Form.</li>
+      </ul>
+    ),
+  },
+  {
+    value: "lobby",
+    icon: Monitor,
+    title: "3. Create and Update Lobby Slides",
+    content: (
+      <>
+        <p>Design slides for: New employees, Service Awards, POST Events, Job Opportunities.</p>
+        <ul className="list-disc list-inside space-y-1">
+          <li>Use PowerPoint to create and format slides.</li>
+          <li>Once your slide is created from the PowerPoint template, submit it via Microsoft Teams: go to <strong>POST Knowledge Library → Templates and Logos channel → Lobby Slides</strong> tab at the top.</li>
+          <li>On the <strong>Lobby Display Submissions</strong> screen, click <strong>New</strong>, choose the slide <strong>Type</strong> (e.g., New Employee), add a comment, attach your template file, and set the <strong>Go Live</strong> and <strong>Expire</strong> dates.</li>
+          <li>Slides are routed through the Web Team for final approval and publishing.</li>
+          <li>
+            Post to the lobby system using Mvix at{" "}
+            <a href="https://cms.mvix.com/sign-in" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">https://cms.mvix.com/sign-in</a>:
+            <ul className="list-[circle] list-inside ml-6 mt-1 space-y-1">
+              <li>Click <strong>Media → Add Media</strong>, set <strong>File Type</strong> to <em>Microsoft Office</em>, and upload the file.</li>
+              <li>Add <strong>Validity</strong> with an <strong>Activate Date</strong> and <strong>Expiration Date</strong> (usually 2 weeks out).</li>
+              <li>Go to <strong>Devices</strong>, find <strong>Internal (new)</strong>, click the <strong>3 dots</strong> on the right, and select <strong>Schedules</strong>.</li>
+              <li>Click <strong>Edit</strong>, drag in the file you just added, then <strong>preview</strong> and <strong>save</strong> the schedule.</li>
+            </ul>
+          </li>
+          <li>Use templates located in <code className="text-primary text-xs">Web Design Doc Team / Lobby Display</code> documentation.</li>
+        </ul>
+      </>
+    ),
+  },
+  {
+    value: "pdf",
+    icon: FileSearch,
+    title: "4. Assist with PDF Accessibility",
+    content: (
+      <>
+        <p>Use Adobe Acrobat Pro and the CommonLook plugin to:</p>
+        <ul className="list-disc list-inside space-y-1">
+          <li>Tag headings, paragraphs, and images</li>
+          <li>Add bookmarks and alt text</li>
+          <li>Check and resolve accessibility issues</li>
+        </ul>
+      </>
+    ),
+  },
+  {
+    value: "new-employee",
+    icon: Users,
+    title: "5. New Employee Process",
+    content: (
+      <p>Vijaya will send an email with the subject: <span className="text-foreground font-semibold">NE employee</span>. You have to accept the invitation to add it to your calendar. All you have to do is add the new employee to <span className="text-foreground font-semibold">PKL</span> and <span className="text-foreground font-semibold">Data Warehouse Team Sites</span>.</p>
+    ),
+  },
+];
+
+const AsNeededTasks = ({ searchQuery }: { searchQuery: string }) => {
+  const refs = useRef<Record<string, HTMLDivElement | null>>({});
+  const [matches, setMatches] = useState<string[]>(asNeededItems.map((i) => i.value));
+  const [openItems, setOpenItems] = useState<string[]>([]);
+
+  useEffect(() => {
+    const q = searchQuery.trim().toLowerCase();
+    if (!q) {
+      setMatches(asNeededItems.map((i) => i.value));
+      setOpenItems([]);
+      return;
+    }
+    const found = asNeededItems.filter((i) => {
+      const text = (refs.current[i.value]?.innerText || i.title).toLowerCase();
+      return text.includes(q);
+    }).map((i) => i.value);
+    setMatches(found);
+    setOpenItems(found);
+  }, [searchQuery]);
+
+  if (searchQuery.trim() && matches.length === 0) return null;
+
+  return (
+    <div>
+      <h2 className="text-lg font-bold text-gradient-primary font-mono mb-4">IV. As-Needed Tasks</h2>
+      <Accordion type="multiple" className="space-y-3" value={openItems} onValueChange={setOpenItems}>
+        {asNeededItems.map((item) => {
+          const Icon = item.icon;
+          const visible = matches.includes(item.value);
+          return (
+            <AccordionItem
+              key={item.value}
+              value={item.value}
+              className={`border border-border/50 rounded-lg px-4 bg-card/50 ${visible ? "" : "hidden"}`}
+            >
+              <AccordionTrigger className="hover:no-underline">
+                <div className="flex items-center gap-3">
+                  <Icon className="h-4 w-4 text-primary" />
+                  <span className="font-mono">{item.title}</span>
+                </div>
+              </AccordionTrigger>
+              <AccordionContent className="text-sm text-muted-foreground space-y-2">
+                <div ref={(el) => (refs.current[item.value] = el)}>{item.content}</div>
+              </AccordionContent>
+            </AccordionItem>
+          );
+        })}
+      </Accordion>
+    </div>
+  );
+};
+
 interface DeskManualSectionProps {
   searchQuery?: string;
 }
